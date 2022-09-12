@@ -36,8 +36,22 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var players = await _context.Players.Include("Performances").ToListAsync();
+            var player = players.Find(x => x.PlayerId == id);
+
             return Ok(player);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdatePlayerById([FromBody] Player player)
+        {
+            _context.Players.Update(player);
+            var isSaved = await _context.SaveChangesAsync() > 0;
+
+            if (isSaved)
+                return Ok(player);
+
+            return BadRequest(new ProblemDetails { Title = "Problem saving player" });
         }
     }
 }
