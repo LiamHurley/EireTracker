@@ -1,0 +1,49 @@
+﻿@page "/fetchdata"
+@using Client.Models
+@inject HttpClient Http
+
+<PageTitle>Players</PageTitle>
+
+<h1>Players</h1>
+
+<p>This component demonstrates fetching players server.</p>
+
+@if (players == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>D.O.B</th>
+                <th>Club</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in players)
+            {
+                <tr>
+                    <td>@player.PlayerId</td>
+                    <td>@player.Name</td>
+                    <td>@player.DateOfBirth</td>
+                    <td>@player.Club</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<Player>? players;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Http
+        players = await Http.GetFromJsonAsync<IEnumerable<Player>>("http://localhost:5247/api/Players");
+    }
+}
+}

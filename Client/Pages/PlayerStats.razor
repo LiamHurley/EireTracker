@@ -1,0 +1,27 @@
+﻿@page "/playerstats"
+@using Client.Models
+@inject HttpClient Http
+
+<PageTitle>Player Stats</PageTitle>
+
+<h1>Player Stats</h1>
+
+<p>This component demonstrates players stats.</p>
+
+@if (players == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    //radio buttons for diff types of stats
+    //use onclick to switch stats accordingly
+    //dont select goalkeepers for outfield stats and vice versa
+    //how to handle nulls here?
+}
+
+@code {
+    private IEnumerable<Player> players;
+
+
+}

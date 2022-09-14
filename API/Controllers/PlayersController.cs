@@ -21,16 +21,23 @@ namespace API.Controllers
         {
             
             _context.Players.Add(player);
-            _context.Database.OpenConnection();
-            _context.Database.ExecuteSqlRaw(@"SET IDENTITY_INSERT dbo.Players ON");
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT dbo.Players ON");
             var isSaved = await _context.SaveChangesAsync() > 0;
-            _context.Database.ExecuteSqlRaw(@"SET IDENTITY_INSERT dbo.Players OFF");
-
+            await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT dbo.Players OFF");
 
             if (isSaved)
                 return Ok(player);
 
             return BadRequest(new ProblemDetails { Title = "Problem saving player" });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        {
+            var players = await _context.Players.Include("Performances").ToListAsync();
+
+            return Ok(players);
         }
 
         [HttpGet("{id}")]
