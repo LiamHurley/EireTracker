@@ -6,7 +6,9 @@ namespace API.Models
     {
         public int PerformanceId { get; set; }
 
-        public string MatchDate { get; set; }
+        public string? MatchDate { get; set; }
+        public bool? Substitute { get; set; }
+        public bool? Captain { get; set; }
 
         #region Goalkeeper Stats
         public int? SavedShotsFromInsideTheBox { get; set; }

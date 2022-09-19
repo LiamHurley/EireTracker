@@ -35,7 +35,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
         {
-            var players = await _context.Players.Include("Performances").ToListAsync();
+            var players = await _context.Players.Include("Performances")
+                .Include("OverallStats")
+                .ToListAsync();
 
             return Ok(players);
         }
@@ -43,7 +45,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(int id)
         {
-            var players = await _context.Players.Include("Performances").ToListAsync();
+            var players = await _context.Players.Include("Performances")
+                .Include("OverallStats")
+                .ToListAsync();
+
             var player = players.Find(x => x.PlayerId == id);
 
             return Ok(player);

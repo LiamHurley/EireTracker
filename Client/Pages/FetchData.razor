@@ -42,7 +42,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //Http
         players = await Http.GetFromJsonAsync<IEnumerable<Player>>("http://localhost:5247/api/Players");
     }
 }

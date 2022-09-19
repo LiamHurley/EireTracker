@@ -5,6 +5,7 @@ namespace Client.Models
     public class Performance
     {
         public int PerformanceId { get; set; }
+        public string MatchDate { get; set; }
 
         #region Goalkeeper Stats
 

@@ -1,5 +1,6 @@
 ﻿@page "/playerstats"
 @using Client.Models
+@using System.Data
 @inject HttpClient Http
 
 <PageTitle>Player Stats</PageTitle>
@@ -14,14 +15,22 @@
 }
 else
 {
-    //radio buttons for diff types of stats
+    //buttons for diff types of stats
+    //buttons for total or p90
     //use onclick to switch stats accordingly
     //dont select goalkeepers for outfield stats and vice versa
-    //how to handle nulls here?
 }
 
 @code {
     private IEnumerable<Player> players;
 
+    protected override async Task OnInitializedAsync()
+    {
+        players = await Http.GetFromJsonAsync<IEnumerable<Player>>("http://localhost:5247/api/Players");
+        foreach (var player in players)
+        {
+            var playerPerformances = await Http.GetFromJsonAsync<IEnumerable<Performance>>("http://localhost:5247/api/Players/" + player.PlayerId);
+        }
+    }
 
 }
