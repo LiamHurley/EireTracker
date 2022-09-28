@@ -1,6 +1,7 @@
 ﻿@page "/playerstats"
 @using Client.Models
 @using System.Data
+@using Client.DTOs
 @inject HttpClient Http
 
 <PageTitle>Player Stats</PageTitle>
@@ -19,18 +20,38 @@ else
     //buttons for total or p90
     //use onclick to switch stats accordingly
     //dont select goalkeepers for outfield stats and vice versa
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th @onclick="SortByGoals">Goals</th>
+                <th @onclick="SortByAssists">Assists</th>
+                <th @onclick="SortByMinutes">Minutes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in players)
+            {
+                <tr>
+                    <td>@player.Name</td>
+                    <td>@player.OverallStatsDto.Goals</td>
+                    <td>@player.OverallStatsDto.GoalAssist</td>
+                    <td>@player.OverallStatsDto.MinutesPlayed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
-    private IEnumerable<Player> players;
+    private IEnumerable<PlayerDto>? players;
 
     protected override async Task OnInitializedAsync()
     {
-        players = await Http.GetFromJsonAsync<IEnumerable<Player>>("http://localhost:5247/api/Players");
-        foreach (var player in players)
-        {
-            var playerPerformances = await Http.GetFromJsonAsync<IEnumerable<Performance>>("http://localhost:5247/api/Players/" + player.PlayerId);
-        }
+        players = await Http.GetFromJsonAsync<IEnumerable<PlayerDto>>("http://localhost:5247/api/Players/overall");
     }
 
+    private void SortByGoals() => players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
+    private void SortByAssists() => players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
+    private void SortByMinutes() => players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
 }

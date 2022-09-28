@@ -12,7 +12,11 @@
 
         public void UpdateOverallStats(Performance performance)
         {
-            OverallStats.MatchesPlayed++;
+            //if 0, return? Or create new field to track appearances off bench, etc?
+            
+            if(performance.MinutesPlayed > 0)
+                OverallStats.MatchesPlayed++;
+
             OverallStats.AccurateCross += UpdateIntStat(performance.AccurateCross);
             OverallStats.AccurateKeeperSweeper += UpdateIntStat(performance.AccurateKeeperSweeper);
             OverallStats.AccurateLongBalls += UpdateIntStat(performance.AccurateLongBalls);
@@ -27,6 +31,7 @@
             OverallStats.ErrorLeadToAShot += UpdateIntStat(performance.ErrorLeadToAShot);
             OverallStats.Fouls += UpdateIntStat(performance.Fouls);
             OverallStats.Goals += UpdateIntStat(performance.Goals);
+            OverallStats.GoalAssist += UpdateIntStat(performance.GoalAssist);
             OverallStats.InterceptionWon += UpdateIntStat(performance.InterceptionWon);
             OverallStats.KeyPass += UpdateIntStat(performance.KeyPass);
             OverallStats.MinutesPlayed += UpdateIntStat(performance.MinutesPlayed);
@@ -47,6 +52,12 @@
             OverallStats.TotalTackle += UpdateIntStat(performance.TotalTackle);
             OverallStats.Touches += UpdateIntStat(performance.Touches);
             OverallStats.WasFouled += UpdateIntStat(performance.WasFouled);
+
+            if (performance.Captain != null)
+                OverallStats.Captain++;
+
+            if((bool)performance.Substitute)
+                OverallStats.Substitute++;
         }
 
         private int UpdateIntStat(int? performanceValue) => (int)(performanceValue != null ? performanceValue : 0);

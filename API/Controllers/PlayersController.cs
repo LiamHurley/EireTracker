@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Models;
+using API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,11 +34,30 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayersWithPerformancesAndOverallStats()
         {
             var players = await _context.Players.Include("Performances")
                 .Include("OverallStats")
                 .ToListAsync();
+
+            return Ok(players);
+        }
+
+        [HttpGet("overall")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllPlayersWithOverallStatsAndOverZeroMinutesPlayed()
+        {
+            var players = await _context.Players.Select(x => new PlayerDto
+            {
+                PlayerId = x.PlayerId,
+                Name = x.Name,
+                Club = x.Club,
+                Position = x.Position,
+                DateOfBirth = x.DateOfBirth,
+                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto()
+            })
+                .ToListAsync();
+
+            players = players.FindAll(p => p.OverallStatsDto.MinutesPlayed > 0);
 
             return Ok(players);
         }

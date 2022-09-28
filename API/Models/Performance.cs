@@ -32,6 +32,7 @@ namespace API.Models
 
         #region Passing Stats
         public int? TotalPass { get; set; }
+        public int? GoalAssist { get; set; }
         public int? AccuratePass { get; set; }
         public int? TotalLongBalls { get; set; }
         public int? AccurateLongBalls { get; set; }

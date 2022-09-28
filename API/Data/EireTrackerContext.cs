@@ -82,6 +82,10 @@ namespace API.Data
                 .HasDefaultValue(0);
 
             modelBuilder.Entity<Performance>()
+                .Property(p => p.GoalAssist)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Performance>()
                 .Property(p => p.InterceptionWon)
                 .HasDefaultValue(0);
 
@@ -223,6 +227,10 @@ namespace API.Data
 
             modelBuilder.Entity<OverallStats>()
                 .Property(p => p.Goals)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.GoalAssist)
                 .HasDefaultValue(0);
 
             modelBuilder.Entity<OverallStats>()

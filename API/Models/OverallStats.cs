@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using API.DTOs;
+using System.Text.Json.Serialization;
 
 namespace API.Models
 {
@@ -29,6 +30,7 @@ namespace API.Models
 
         #region Passing Stats
         public int TotalPass { get; set; }
+        public int GoalAssist { get; set; }
         public int AccuratePass { get; set; }
         public int TotalLongBalls { get; set; }
         public int AccurateLongBalls { get; set; }
@@ -61,5 +63,49 @@ namespace API.Models
         public int? PlayerId { get; set; }
         [JsonIgnore]
         public Player? Player { get; set; }
+
+        public OverallStatsDto ConvertToOverallStatsDto()
+        {
+            return new()
+            {
+                MatchesPlayed = this.MatchesPlayed,
+                AccurateCross = this.AccurateCross,
+                AccurateKeeperSweeper = this.AccurateKeeperSweeper,
+                AccurateLongBalls = this.AccurateLongBalls,
+                AerialLost = this.AerialLost,
+                AccuratePass = this.AccuratePass,
+                AerialWon = this.AerialWon,
+                BigChanceCreated = this.BigChanceCreated,
+                BigChanceMissed = this.BigChanceMissed,
+                BlockedScoringAttempt = this.BlockedScoringAttempt,
+                Captain = this.Captain,
+                DuelLost = this.DuelLost,
+                DuelWon = this.DuelWon,
+                ErrorLeadToAShot = this.ErrorLeadToAShot,
+                Fouls = this.Fouls,
+                Goals = this.Goals,
+                InterceptionWon = this.InterceptionWon,
+                KeyPass = this.KeyPass,
+                MinutesPlayed = this.MinutesPlayed,
+                OnTargetScoringAttempt = this.OnTargetScoringAttempt,
+                OutfielderBlock = this.OutfielderBlock,
+                PossessionLostCtrl = this.PossessionLostCtrl,
+                Punches = this.Punches,
+                Rating = this.Rating,
+                SavedShotsFromInsideTheBox = this.SavedShotsFromInsideTheBox,
+                ShotOffTarget = this.ShotOffTarget,
+                Saves = this.Saves,
+                Substitute = this.Substitute,
+                TotalClearance = this.TotalClearance,
+                TotalCross = this.TotalCross,
+                TotalKeeperSweeper = this.TotalKeeperSweeper,
+                TotalLongBalls = this.TotalLongBalls,
+                TotalOffside = this.TotalOffside,
+                TotalPass = this.TotalPass,
+                TotalTackle = this.TotalTackle,
+                Touches = this.Touches,
+                WasFouled = this.WasFouled
+            };
+        }
     }
 }
