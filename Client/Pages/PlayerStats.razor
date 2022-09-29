@@ -20,6 +20,11 @@ else
     //buttons for total or p90
     //use onclick to switch stats accordingly
     //dont select goalkeepers for outfield stats and vice versa
+    //create a class library project
+
+    <button type="button" @onclick="DisplayTotal">Total</button>
+    <button type="button" @onclick="DisplayPerNinety">P90</button>
+
     <table class="table">
         <thead>
             <tr>
@@ -27,6 +32,8 @@ else
                 <th @onclick="SortByGoals">Goals</th>
                 <th @onclick="SortByAssists">Assists</th>
                 <th @onclick="SortByMinutes">Minutes</th>
+                <th>Passes Completed</th>
+                <th>Touches</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +44,8 @@ else
                     <td>@player.OverallStatsDto.Goals</td>
                     <td>@player.OverallStatsDto.GoalAssist</td>
                     <td>@player.OverallStatsDto.MinutesPlayed</td>
+                    <td>@player.OverallStatsDto.AccuratePass</td>
+                    <td>@player.OverallStatsDto.Touches</td>
                 </tr>
             }
         </tbody>
@@ -45,6 +54,8 @@ else
 
 @code {
     private IEnumerable<PlayerDto>? players;
+    private bool isPerNinety;
+    private double? goals;
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,4 +65,31 @@ else
     private void SortByGoals() => players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
     private void SortByAssists() => players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
     private void SortByMinutes() => players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+
+    private void DisplayTotal()
+    {
+        if (!isPerNinety)
+            return;
+
+        isPerNinety = false;
+
+        foreach (var player in players)
+        {
+            player.ConvertStatsToTotal();
+            //project player into a player view model where appropriate stats are rounded to 2dp
+        }
+    }
+
+    private void DisplayPerNinety()
+    {
+        if (isPerNinety)
+            return;
+
+        isPerNinety = true;
+
+        foreach (var player in players)
+        {
+            player.ConvertStatsToPerNinety();
+        }
+    }
 }
