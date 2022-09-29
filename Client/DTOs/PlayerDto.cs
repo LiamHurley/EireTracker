@@ -83,8 +83,8 @@
             OverallStatsDto.WasFouled = ConvertPerNinetyToTotal(OverallStatsDto.WasFouled);
         }
 
-        private double ConvertTotalToPerNinety(double stat) => stat / OverallStatsDto.MinutesPlayed * 90;
+        private double ConvertTotalToPerNinety(double stat) => Math.Round(stat / OverallStatsDto.MinutesPlayed * 90, 2, MidpointRounding.AwayFromZero);
 
-        private double ConvertPerNinetyToTotal(double stat) => stat / 90 * OverallStatsDto.MinutesPlayed;
+        private double ConvertPerNinetyToTotal(double stat) => Math.Round(stat / 90 * OverallStatsDto.MinutesPlayed, 0, MidpointRounding.AwayFromZero);
     }
 }

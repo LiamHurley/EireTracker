@@ -17,10 +17,9 @@
 else
 {
     //buttons for diff types of stats
-    //buttons for total or p90
-    //use onclick to switch stats accordingly
     //dont select goalkeepers for outfield stats and vice versa
-    //create a class library project
+
+    //fix average ratings
 
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
@@ -76,7 +75,6 @@ else
         foreach (var player in players)
         {
             player.ConvertStatsToTotal();
-            //project player into a player view model where appropriate stats are rounded to 2dp
         }
     }
 
