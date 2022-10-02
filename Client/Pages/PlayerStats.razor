@@ -18,8 +18,13 @@ else
 {
     //buttons for diff types of stats
     //dont select goalkeepers for outfield stats and vice versa
+    //pagination
 
-    //fix average ratings
+    <button type="button" @onclick="DisplayOutfielders">Show Outfielders</button>
+    <button type="button" @onclick="DisplayGoalkeepers">Show Goalkeepers</button>
+    <button type="button" @onclick="DisplayAllPlayers">Show All</button>
+
+    <br /><br />
 
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
@@ -55,11 +60,18 @@ else
 
 @code {
     private IEnumerable<PlayerDto>? players;
+    private IEnumerable<PlayerDto>? allPlayers;
+    private IEnumerable<PlayerDto>? outfieldPlayers;
+    private IEnumerable<PlayerDto>? goalkeeperPlayers;
+
     private bool isPerNinety;
 
     protected override async Task OnInitializedAsync()
     {
         players = await Http.GetFromJsonAsync<IEnumerable<PlayerDto>>("http://localhost:5247/api/Players/overall");
+        allPlayers = players;
+        outfieldPlayers = players.Where(p => p.Position != "G");
+        goalkeeperPlayers = players.Where(p => p.Position == "G");
     }
 
     private void SortByGoals() => players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
@@ -90,5 +102,20 @@ else
         {
             player.ConvertStatsToPerNinety();
         }
+    }
+
+    private void DisplayOutfielders()
+    {
+        players = outfieldPlayers;
+    }
+
+    private void DisplayGoalkeepers()
+    {
+        players = goalkeeperPlayers;
+    }
+
+    private void DisplayAllPlayers()
+    {
+        players = allPlayers;
     }
 }
