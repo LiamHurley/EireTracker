@@ -13,9 +13,13 @@
         public void UpdateOverallStats(Performance performance)
         {
             //if 0, return? Or create new field to track appearances off bench, etc?
-            
-            if(performance.MinutesPlayed > 0)
+
+            if (performance.MinutesPlayed > 0)
+            {
                 OverallStats.MatchesPlayed++;
+                OverallStats.Rating += UpdateDoubleStat(performance.Rating);
+                OverallStats.AverageRating = Math.Round(UpdateDoubleStat(OverallStats.Rating / OverallStats.MatchesPlayed), 2, MidpointRounding.AwayFromZero);
+            }
 
             OverallStats.AccurateCross += UpdateDoubleStat(performance.AccurateCross);
             OverallStats.AccurateKeeperSweeper += UpdateDoubleStat(performance.AccurateKeeperSweeper);
@@ -39,7 +43,6 @@
             OverallStats.OutfielderBlock += UpdateDoubleStat(performance.OutfielderBlock);
             OverallStats.PossessionLostCtrl += UpdateDoubleStat(performance.PossessionLostCtrl);
             OverallStats.Punches += UpdateDoubleStat(performance.Punches);
-            OverallStats.Rating += UpdateDoubleStat(performance.Rating);
             OverallStats.SavedShotsFromInsideTheBox += UpdateDoubleStat(performance.SavedShotsFromInsideTheBox);
             OverallStats.ShotOffTarget += UpdateDoubleStat(performance.ShotOffTarget);
             OverallStats.Saves += UpdateDoubleStat(performance.Saves);

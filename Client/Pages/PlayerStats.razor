@@ -33,6 +33,7 @@ else
                 <th @onclick="SortByMinutes">Minutes</th>
                 <th>Passes Completed</th>
                 <th>Touches</th>
+                <th>Average Rating</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@ else
                     <td>@player.OverallStatsDto.MinutesPlayed</td>
                     <td>@player.OverallStatsDto.AccuratePass</td>
                     <td>@player.OverallStatsDto.Touches</td>
+                    <td>@player.OverallStatsDto.AverageRating</td>
                 </tr>
             }
         </tbody>
@@ -54,7 +56,6 @@ else
 @code {
     private IEnumerable<PlayerDto>? players;
     private bool isPerNinety;
-    private double? goals;
 
     protected override async Task OnInitializedAsync()
     {

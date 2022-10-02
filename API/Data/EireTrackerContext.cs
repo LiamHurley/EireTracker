@@ -266,6 +266,10 @@ namespace API.Data
                 .HasDefaultValue(0.0);
 
             modelBuilder.Entity<OverallStats>()
+                .Property(p => p.AverageRating)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
                 .Property(p => p.Saves)
                 .HasDefaultValue(0.0);
 

@@ -51,6 +51,7 @@
         public double MinutesPlayed { get; set; }
         public double Touches { get; set; }
         public double Rating { get; set; }
+        public double AverageRating { get; set; }
         public double TotalOffside { get; set; }
         public double Substitute { get; set; }
         public double Captain { get; set; }
