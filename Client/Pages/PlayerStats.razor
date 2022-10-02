@@ -2,6 +2,7 @@
 @using Client.Models
 @using System.Data
 @using Client.DTOs
+@using Client.Enums
 @inject HttpClient Http
 
 <PageTitle>Player Stats</PageTitle>
@@ -29,33 +30,65 @@ else
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th @onclick="SortByGoals">Goals</th>
-                <th @onclick="SortByAssists">Assists</th>
-                <th @onclick="SortByMinutes">Minutes</th>
-                <th>Passes Completed</th>
-                <th>Touches</th>
-                <th>Average Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var player in players)
-            {
+    switch(statsToDisplay){
+        case StatCategory.Attacking:
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>@player.Name</td>
-                    <td>@player.OverallStatsDto.Goals</td>
-                    <td>@player.OverallStatsDto.GoalAssist</td>
-                    <td>@player.OverallStatsDto.MinutesPlayed</td>
-                    <td>@player.OverallStatsDto.AccuratePass</td>
-                    <td>@player.OverallStatsDto.Touches</td>
-                    <td>@player.OverallStatsDto.AverageRating</td>
+                    <th>Name</th>
+                    <th @onclick="SortByGoals">Goals</th>
+                    <th @onclick="SortByAssists">Assists</th>
+                    <th @onclick="SortByMinutes">Minutes</th>
+                    <th>Passes Completed</th>
+                    <th>Touches</th>
+                    <th>Average Rating</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                @foreach (var player in players)
+                {
+                    <tr>
+                        <td>@player.Name</td>
+                        <td>@player.OverallStatsDto.Goals</td>
+                        <td>@player.OverallStatsDto.GoalAssist</td>
+                        <td>@player.OverallStatsDto.MinutesPlayed</td>
+                        <td>@player.OverallStatsDto.AccuratePass</td>
+                        <td>@player.OverallStatsDto.Touches</td>
+                        <td>@player.OverallStatsDto.AverageRating</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            break;
+        case StatCategory.Goalkeeping:
+            <table class="table">
+                <thead>
+                    <tr>
+                        @foreach(var header in _goalkeepingStatsTableHeaders)
+                        {
+                            <th>@header</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var player in players)
+                    {
+                        <tr>
+                            <td>@player.Name</td>
+                            <td>@player.Club</td>
+                            <td>@player.OverallStatsDto.MatchesPlayed</td>
+                            <td>@player.OverallStatsDto.Saves</td>
+                            <td>@player.OverallStatsDto.SavedShotsFromInsideTheBox</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AccuratePass, @player.OverallStatsDto.TotalPass)</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AccurateLongBalls, @player.OverallStatsDto.TotalLongBalls)</td>
+                            <td>@player.OverallStatsDto.AverageRating</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            break;
+    }
+
 }
 
 @code {
@@ -64,7 +97,12 @@ else
     private IEnumerable<PlayerDto>? outfieldPlayers;
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
 
+    private double PassCompletion { get; set; }
+
     private bool isPerNinety;
+    private StatCategory statsToDisplay = StatCategory.Attacking;
+    private readonly string[] _shootingStatsTableHeaders = { "Shots", "Shots On Target", "Big Chances Missed", "Goals" };
+    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Saves", "Saves From Shots Inside Box", "Pass Completion (%)", "Long Ball Completion (%)", "Average Rating" };
 
     protected override async Task OnInitializedAsync()
     {
@@ -107,15 +145,18 @@ else
     private void DisplayOutfielders()
     {
         players = outfieldPlayers;
+        statsToDisplay = StatCategory.Attacking;
     }
 
     private void DisplayGoalkeepers()
     {
         players = goalkeeperPlayers;
+        statsToDisplay = StatCategory.Goalkeeping;
     }
 
     private void DisplayAllPlayers()
     {
         players = allPlayers;
+        statsToDisplay = StatCategory.Attacking;
     }
 }

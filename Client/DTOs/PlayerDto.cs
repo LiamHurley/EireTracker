@@ -86,5 +86,7 @@
         private double ConvertTotalToPerNinety(double stat) => Math.Round(stat / OverallStatsDto.MinutesPlayed * 90, 2, MidpointRounding.AwayFromZero);
 
         private double ConvertPerNinetyToTotal(double stat) => Math.Round(stat / 90 * OverallStatsDto.MinutesPlayed, 0, MidpointRounding.AwayFromZero);
+
+        public double CalculatePercentage(double stat, double statToDivideBy) => Math.Round((stat / statToDivideBy) * 100, 2, MidpointRounding.AwayFromZero);
     }
 }
