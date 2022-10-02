@@ -2,6 +2,7 @@
 {
     public enum StatCategory
     {
+        General,
         Attacking,
         Goalkeeping,
         Passing,
