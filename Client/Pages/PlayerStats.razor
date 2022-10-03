@@ -26,6 +26,9 @@ else
 
     <br /><br />
 
+    <button type="button" @onclick="DisplayDefensiveStats">Defensive Stats</button>
+
+    <br /> <br />
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
 
@@ -65,6 +68,7 @@ else
                     <tr>
                         @foreach(var header in _goalkeepingStatsTableHeaders)
                         {
+                            // TO-DO: figure out dynamically generating onclick events
                             <th>@header</th>
                         }
                     </tr>
@@ -76,11 +80,41 @@ else
                             <td>@player.Name</td>
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
+                            <td>@player.OverallStatsDto.CleanSheets</td>
                             <td>@player.OverallStatsDto.Saves</td>
                             <td>@player.OverallStatsDto.SavedShotsFromInsideTheBox</td>
                             <td>@player.CalculatePercentage(@player.OverallStatsDto.AccuratePass, @player.OverallStatsDto.TotalPass)</td>
                             <td>@player.CalculatePercentage(@player.OverallStatsDto.AccurateLongBalls, @player.OverallStatsDto.TotalLongBalls)</td>
                             <td>@player.OverallStatsDto.AverageRating</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            break;
+        case StatCategory.Defending:
+            <table class="table">
+                <thead>
+                    <tr>
+                        @foreach(var header in _defendingStatsTableHeaders)
+                        {
+                            // TO-DO: figure out dynamically generating onclick events
+                            <th>@header</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var player in players)
+                    {
+                        <tr>
+                            <td>@player.Name</td>
+                            <td>@player.Club</td>
+                            <td>@player.OverallStatsDto.MatchesPlayed</td>
+                            <td>@player.OverallStatsDto.MinutesPlayed</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.DuelWon, (@player.OverallStatsDto.DuelWon + @player.OverallStatsDto.DuelLost))</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AerialWon, (@player.OverallStatsDto.AerialLost + @player.OverallStatsDto.AerialWon))</td>
+                            <td>@player.OverallStatsDto.TotalTackle</td>
+                            <td>@player.OverallStatsDto.OutfielderBlock</td>
+                            <td>@player.OverallStatsDto.ErrorLeadToAShot</td>
                         </tr>
                     }
                 </tbody>
@@ -100,7 +134,9 @@ else
 
     private StatCategory statsToDisplay = StatCategory.Attacking;
     private readonly string[] _shootingStatsTableHeaders = { "Shots", "Shots On Target", "Big Chances Missed", "Goals" };
-    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Saves", "Saves From Shots Inside Box", "Pass Completion (%)", "Long Ball Completion (%)", "Average Rating" };
+    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Clean Sheets", "Saves", "Saves From Shots Inside Box", "Pass Completion (%)", "Long Ball Completion (%)", "Average Rating" };
+    private readonly string[] _defendingStatsTableHeaders = { "Name", "Club", "Appearances", "Minutes", "Duels Won (%)", "Aerial Duels Won (%)",
+                                                              "Tackles", "Shots Blocked", "Errors Leading To Shot" };
 
     protected override async Task OnInitializedAsync()
     {
@@ -156,5 +192,11 @@ else
     {
         players = allPlayers;
         statsToDisplay = StatCategory.Attacking;
+    }
+
+    private void DisplayDefensiveStats()
+    {
+        players = outfieldPlayers;
+        statsToDisplay = StatCategory.Defending;
     }
 }
