@@ -98,7 +98,7 @@ else
                         @foreach(var header in _defendingStatsTableHeaders)
                         {
                             // TO-DO: figure out dynamically generating onclick events
-                            <th>@header</th>
+                            <th @onclick="() => SortBy(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -149,6 +149,16 @@ else
     private void SortByGoals() => players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
     private void SortByAssists() => players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
     private void SortByMinutes() => players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+
+    private void SortBy(string stat)
+    {
+        switch (stat)
+        {
+            case "Duels Won (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.DuelWon / (p.OverallStatsDto.DuelLost + p.OverallStatsDto.DuelLost));
+                break;
+        }
+    }
 
     private void DisplayTotal()
     {
