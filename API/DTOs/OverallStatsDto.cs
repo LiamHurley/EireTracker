@@ -13,6 +13,7 @@
         #endregion
 
         #region Defensive Stats
+        public double CleanSheets { get; set; }
         public double ErrorLeadToAShot { get; set; }
         public double TotalClearance { get; set; }
         public double AerialLost { get; set; }
@@ -46,12 +47,12 @@
         #endregion
 
         #region Misc Stats
+        public double AverageRating { get; set; }
         public double WasFouled { get; set; }
         public double Fouls { get; set; }
         public double MinutesPlayed { get; set; }
         public double Touches { get; set; }
         public double Rating { get; set; }
-        public double AverageRating { get; set; }
         public double TotalOffside { get; set; }
         public double Substitute { get; set; }
         public double Captain { get; set; }

@@ -173,6 +173,10 @@ namespace API.Data
                 .Property(p => p.Captain)
                 .HasDefaultValue(false);
 
+            modelBuilder.Entity<Performance>()
+                .Property(p => p.CleanSheet)
+                .HasDefaultValue(false);
+
             modelBuilder.Entity<OverallStats>()
                 .Property(p => p.AccurateCross)
                 .HasDefaultValue(0.0);
@@ -271,6 +275,10 @@ namespace API.Data
 
             modelBuilder.Entity<OverallStats>()
                 .Property(p => p.Saves)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.CleanSheets)
                 .HasDefaultValue(0.0);
 
             modelBuilder.Entity<OverallStats>()

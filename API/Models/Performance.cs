@@ -19,6 +19,7 @@ namespace API.Models
         #endregion
 
         #region Defensive Stats
+        public bool? CleanSheet { get; set; }
         public double? ErrorLeadToAShot { get; set; }
         public double? TotalClearance { get; set; }
         public double? AerialLost { get; set; }

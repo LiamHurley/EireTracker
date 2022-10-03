@@ -19,6 +19,7 @@
                 OverallStats.MatchesPlayed++;
                 OverallStats.Rating += UpdateDoubleStat(performance.Rating);
                 OverallStats.AverageRating = Math.Round(UpdateDoubleStat(OverallStats.Rating / OverallStats.MatchesPlayed), 2, MidpointRounding.AwayFromZero);
+                OverallStats.CleanSheets += (bool)performance.CleanSheet ? 1 : 0;
             }
 
             OverallStats.AccurateCross += UpdateDoubleStat(performance.AccurateCross);

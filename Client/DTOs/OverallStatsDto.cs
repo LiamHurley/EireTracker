@@ -13,6 +13,7 @@
         #endregion
 
         #region Defensive Stats
+        public double CleanSheets { get; set; }
         public double ErrorLeadToAShot { get; set; }
         public double TotalClearance { get; set; }
         public double AerialLost { get; set; }
