@@ -47,6 +47,9 @@
             OverallStats.SavedShotsFromInsideTheBox += UpdateDoubleStat(performance.SavedShotsFromInsideTheBox);
             OverallStats.ShotOffTarget += UpdateDoubleStat(performance.ShotOffTarget);
             OverallStats.Saves += UpdateDoubleStat(performance.Saves);
+            OverallStats.TotalShotsTaken += UpdateDoubleStat(performance.BlockedScoringAttempt + performance.OnTargetScoringAttempt + performance.ShotOffTarget);
+            OverallStats.TotalAerialDuels += UpdateDoubleStat(performance.AerialLost + performance.AerialWon);
+            OverallStats.TotalDuels += UpdateDoubleStat(performance.DuelLost + performance.DuelWon);
             OverallStats.TotalClearance += UpdateDoubleStat(performance.TotalClearance);
             OverallStats.TotalCross += UpdateDoubleStat(performance.TotalCross);
             OverallStats.TotalKeeperSweeper += UpdateDoubleStat(performance.TotalKeeperSweeper);

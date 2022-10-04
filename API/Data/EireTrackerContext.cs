@@ -336,6 +336,18 @@ namespace API.Data
             modelBuilder.Entity<OverallStats>()
                 .Property(p => p.MatchesPlayed)
                 .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.TotalShotsTaken)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.TotalAerialDuels)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.TotalDuels)
+                .HasDefaultValue(0.0);
         }
 
         public DbSet<Player> Players { get; set; }
