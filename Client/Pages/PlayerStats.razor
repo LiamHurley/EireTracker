@@ -17,7 +17,6 @@
 }
 else
 {
-    //buttons for diff types of stats
     //pagination
 
     <button type="button" @onclick="DisplayOutfielders">Show Outfielders</button>
@@ -44,8 +43,11 @@ else
                         {
                             <th>
                                 @header
-                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
                             </th>
                         }
                     </tr>
@@ -75,8 +77,11 @@ else
                         {
                             <th>
                                 @header
-                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
                             </th>
                         }
                     </tr>
@@ -105,8 +110,11 @@ else
                         {
                             <th>
                                 @header
-                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
                             </th>
                         }
                     </tr>
@@ -137,8 +145,11 @@ else
                         {
                             <th>
                                 @header
-                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
                             </th>
                         }
                     </tr>
