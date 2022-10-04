@@ -18,8 +18,10 @@
         public double TotalClearance { get; set; }
         public double AerialLost { get; set; }
         public double AerialWon { get; set; }
+        public double TotalAerialDuels { get; set; }
         public double DuelLost { get; set; }
         public double DuelWon { get; set; }
+        public double TotalDuels { get; set; }
         public double InterceptionWon { get; set; }
         public double TotalTackle { get; set; }
         public double OutfielderBlock { get; set; }
@@ -41,6 +43,7 @@
         #region Shooting Stats
         public double Goals { get; set; }
         public double BigChanceMissed { get; set; }
+        public double TotalShotsTaken { get; set; }
         public double ShotOffTarget { get; set; }
         public double OnTargetScoringAttempt { get; set; }
         public double BlockedScoringAttempt { get; set; }

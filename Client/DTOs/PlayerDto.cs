@@ -35,6 +35,9 @@
             OverallStatsDto.SavedShotsFromInsideTheBox = ConvertTotalToPerNinety(OverallStatsDto.SavedShotsFromInsideTheBox);
             OverallStatsDto.ShotOffTarget = ConvertTotalToPerNinety(OverallStatsDto.ShotOffTarget);
             OverallStatsDto.Saves = ConvertTotalToPerNinety(OverallStatsDto.Saves);
+            OverallStatsDto.TotalShotsTaken = ConvertTotalToPerNinety(OverallStatsDto.TotalShotsTaken);
+            OverallStatsDto.TotalAerialDuels = ConvertTotalToPerNinety(OverallStatsDto.TotalAerialDuels);
+            OverallStatsDto.TotalDuels = ConvertTotalToPerNinety(OverallStatsDto.TotalDuels);
             OverallStatsDto.TotalClearance = ConvertTotalToPerNinety(OverallStatsDto.TotalClearance);
             OverallStatsDto.TotalCross = ConvertTotalToPerNinety(OverallStatsDto.TotalCross);
             OverallStatsDto.TotalKeeperSweeper = ConvertTotalToPerNinety(OverallStatsDto.TotalKeeperSweeper);
@@ -72,6 +75,9 @@
             OverallStatsDto.SavedShotsFromInsideTheBox = ConvertPerNinetyToTotal(OverallStatsDto.SavedShotsFromInsideTheBox);
             OverallStatsDto.ShotOffTarget = ConvertPerNinetyToTotal(OverallStatsDto.ShotOffTarget);
             OverallStatsDto.Saves = ConvertPerNinetyToTotal(OverallStatsDto.Saves);
+            OverallStatsDto.TotalShotsTaken = ConvertPerNinetyToTotal(OverallStatsDto.TotalShotsTaken);
+            OverallStatsDto.TotalAerialDuels = ConvertPerNinetyToTotal(OverallStatsDto.TotalAerialDuels);
+            OverallStatsDto.TotalDuels = ConvertPerNinetyToTotal(OverallStatsDto.TotalDuels);
             OverallStatsDto.TotalClearance = ConvertPerNinetyToTotal(OverallStatsDto.TotalClearance);
             OverallStatsDto.TotalCross = ConvertPerNinetyToTotal(OverallStatsDto.TotalCross);
             OverallStatsDto.TotalKeeperSweeper = ConvertPerNinetyToTotal(OverallStatsDto.TotalKeeperSweeper);

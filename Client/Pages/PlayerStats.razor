@@ -27,36 +27,71 @@ else
     <br /><br />
 
     <button type="button" @onclick="DisplayDefensiveStats">Defensive Stats</button>
+    <button type="button" @onclick="DisplayAttackingStats">Attacking Stats</button>
+    <button type="button" @onclick="DisplayGeneralStats">General Stats</button>
 
     <br /> <br />
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
 
-    switch(statsToDisplay){
-        case StatCategory.Attacking:
+    switch(statsToDisplay)
+    {
+        case StatCategory.General:
             <table class="table">
                 <thead>
-                <tr>
-                    <th>Name</th>
-                    <th @onclick="SortByGoals">Goals</th>
-                    <th @onclick="SortByAssists">Assists</th>
-                    <th @onclick="SortByMinutes">Minutes</th>
-                    <th>Passes Completed</th>
-                    <th>Touches</th>
-                    <th>Average Rating</th>
-                </tr>
+                    <tr>
+                        @foreach(var header in _generalStatsTableHeaders)
+                        {
+                            <th>
+                                @header
+                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                            </th>
+                        }
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach (var player in players)
                 {
                     <tr>
                         <td>@player.Name</td>
+                        <td>@player.Club</td>
+                        <td>@player.DateOfBirth</td>
+                        <td>@player.OverallStatsDto.MatchesPlayed</td>
+                        <td>@player.OverallStatsDto.MinutesPlayed</td>
                         <td>@player.OverallStatsDto.Goals</td>
                         <td>@player.OverallStatsDto.GoalAssist</td>
-                        <td>@player.OverallStatsDto.MinutesPlayed</td>
-                        <td>@player.OverallStatsDto.AccuratePass</td>
-                        <td>@player.OverallStatsDto.Touches</td>
                         <td>@player.OverallStatsDto.AverageRating</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            break;
+        case StatCategory.Attacking:
+            <table class="table">
+                <thead>
+                    <tr>
+                        @foreach(var header in _shootingStatsTableHeaders)
+                        {
+                            <th>
+                                @header
+                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var player in players)
+                {
+                    <tr>
+                        <td>@player.Name</td>
+                        <td>@player.Club</td>
+                        <td>@player.OverallStatsDto.MinutesPlayed</td>
+                        <td>@player.OverallStatsDto.TotalShotsTaken</td>
+                        <td>@player.OverallStatsDto.OnTargetScoringAttempt</td>
+                        <td>@player.OverallStatsDto.BigChanceMissed</td>
+                        <td>@player.OverallStatsDto.Goals</td>
                     </tr>
                 }
                 </tbody>
@@ -68,8 +103,11 @@ else
                     <tr>
                         @foreach(var header in _goalkeepingStatsTableHeaders)
                         {
-                            // TO-DO: figure out dynamically generating onclick events
-                            <th>@header</th>
+                            <th>
+                                @header
+                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                            </th>
                         }
                     </tr>
                 </thead>
@@ -82,9 +120,9 @@ else
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.CleanSheets</td>
                             <td>@player.OverallStatsDto.Saves</td>
-                            <td>@player.OverallStatsDto.SavedShotsFromInsideTheBox</td>
                             <td>@player.CalculatePercentage(@player.OverallStatsDto.AccuratePass, @player.OverallStatsDto.TotalPass)</td>
                             <td>@player.CalculatePercentage(@player.OverallStatsDto.AccurateLongBalls, @player.OverallStatsDto.TotalLongBalls)</td>
+                            <td>@player.OverallStatsDto.ErrorLeadToAShot</td>
                             <td>@player.OverallStatsDto.AverageRating</td>
                         </tr>
                     }
@@ -97,8 +135,11 @@ else
                     <tr>
                         @foreach(var header in _defendingStatsTableHeaders)
                         {
-                            // TO-DO: figure out dynamically generating onclick events
-                            <th @onclick="() => SortBy(header)">@header</th>
+                            <th>
+                                @header
+                                <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                            </th>
                         }
                     </tr>
                 </thead>
@@ -110,8 +151,8 @@ else
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.MinutesPlayed</td>
-                            <td>@player.CalculatePercentage(@player.OverallStatsDto.DuelWon, (@player.OverallStatsDto.DuelWon + @player.OverallStatsDto.DuelLost))</td>
-                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AerialWon, (@player.OverallStatsDto.AerialLost + @player.OverallStatsDto.AerialWon))</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.DuelWon, @player.OverallStatsDto.TotalDuels)</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AerialWon, @player.OverallStatsDto.TotalAerialDuels)</td>
                             <td>@player.OverallStatsDto.TotalTackle</td>
                             <td>@player.OverallStatsDto.OutfielderBlock</td>
                             <td>@player.OverallStatsDto.ErrorLeadToAShot</td>
@@ -131,12 +172,15 @@ else
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
 
     private bool isPerNinety;
+    private StatCategory statsToDisplay = StatCategory.General;
 
-    private StatCategory statsToDisplay = StatCategory.Attacking;
-    private readonly string[] _shootingStatsTableHeaders = { "Shots", "Shots On Target", "Big Chances Missed", "Goals" };
-    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Clean Sheets", "Saves", "Saves From Shots Inside Box", "Pass Completion (%)", "Long Ball Completion (%)", "Average Rating" };
+    private readonly string[] _shootingStatsTableHeaders = { "Name", "Club", "Minutes", "Shots", "Shots On Target", "Big Chances Missed", "Goals" };
+    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Clean Sheets", "Saves", 
+                                                                "Pass Completion (%)", "Long Ball Completion (%)", "Errors Leading To Shot", "Average Rating" };
     private readonly string[] _defendingStatsTableHeaders = { "Name", "Club", "Appearances", "Minutes", "Duels Won (%)", "Aerial Duels Won (%)",
                                                               "Tackles", "Shots Blocked", "Errors Leading To Shot" };
+    private readonly string[] _generalStatsTableHeaders = { "Name", "Club", "Age", "Appearances", "Minutes", "Goals", "Assists", "Average Rating" };
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -144,18 +188,132 @@ else
         allPlayers = players;
         outfieldPlayers = players.Where(p => p.Position != "G");
         goalkeeperPlayers = players.Where(p => p.Position == "G");
+        players = outfieldPlayers;
     }
 
-    private void SortByGoals() => players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
-    private void SortByAssists() => players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
-    private void SortByMinutes() => players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
-
-    private void SortBy(string stat)
+    private void SortStatDescending(string stat)
     {
-        switch (stat)
+        switch (statsToDisplay)
         {
+            case StatCategory.General:
+                SortGeneralStatDescending(stat);
+                break;
+            case StatCategory.Attacking:
+                SortAttackingStatDescending(stat);
+                break;
+            case StatCategory.Defending:
+                SortDefendingStatDescending(stat);
+                break;
+            case StatCategory.Goalkeeping:
+                SortGoalkeepingStatDescending(stat);
+                break;
+        }
+    }
+
+    private void SortStatAscending(string stat)
+    {
+
+    }
+
+    private void SortAttackingStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Shots":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalShotsTaken);
+                break;
+            case "Shots On Target":
+                players = players.OrderByDescending(p => p.OverallStatsDto.OnTargetScoringAttempt);
+                break;
+            case "Big Chances Missed":
+                players = players.OrderByDescending(p => p.OverallStatsDto.BigChanceMissed);
+                break;
+            case "Goals":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
+                break;
+        }
+    }
+
+    private void SortGeneralStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Goals":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Goals);
+                break;
+            case "Assists":
+                players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortDefendingStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
             case "Duels Won (%)":
-                players = players.OrderByDescending(p => p.OverallStatsDto.DuelWon / (p.OverallStatsDto.DuelLost + p.OverallStatsDto.DuelLost));
+                players = players.OrderByDescending(p => p.OverallStatsDto.DuelWon / p.OverallStatsDto.TotalDuels);
+                break;
+            case "Aerial Duels Won (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AerialWon / p.OverallStatsDto.TotalAerialDuels);
+                break;
+            case "Tackles":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalTackle);
+                break;
+            case "Shots Blocked":
+                players = players.OrderByDescending(p => p.OverallStatsDto.OutfielderBlock);
+                break;
+            case "Errors Leading To Shot":
+                players = players.OrderByDescending(p => p.OverallStatsDto.ErrorLeadToAShot);
+                break;
+        }
+    }
+
+    private void SortGoalkeepingStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Clean Sheets":
+                players = players.OrderByDescending(p => p.OverallStatsDto.CleanSheets);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Saves":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Saves);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+            case "Errors Leading To Shot":
+                players = players.OrderByDescending(p => p.OverallStatsDto.ErrorLeadToAShot);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
                 break;
         }
     }
@@ -208,5 +366,16 @@ else
     {
         players = outfieldPlayers;
         statsToDisplay = StatCategory.Defending;
+    }
+
+    private void DisplayAttackingStats()
+    {
+        players = outfieldPlayers;
+        statsToDisplay = StatCategory.Attacking;
+    }
+
+    private void DisplayGeneralStats()
+    {
+        statsToDisplay = StatCategory.General;
     }
 }
