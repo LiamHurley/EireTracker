@@ -93,10 +93,11 @@ else
                         <td>@player.Name</td>
                         <td>@player.Club</td>
                         <td>@player.OverallStatsDto.MinutesPlayed</td>
+                        <td>@player.OverallStatsDto.Goals</td>
+                        <td>@CalculateMinutesPerGoal(@player.OverallStatsDto.MinutesPlayed, @player.OverallStatsDto.Goals)</td> <!-- minutes per goal -->
                         <td>@player.OverallStatsDto.TotalShotsTaken</td>
                         <td>@player.OverallStatsDto.OnTargetScoringAttempt</td>
                         <td>@player.OverallStatsDto.BigChanceMissed</td>
-                        <td>@player.OverallStatsDto.Goals</td>
                     </tr>
                 }
                 </tbody>
@@ -185,7 +186,7 @@ else
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
 
-    private readonly string[] _shootingStatsTableHeaders = { "Name", "Club", "Minutes", "Shots", "Shots On Target", "Big Chances Missed", "Goals" };
+    private readonly string[] _shootingStatsTableHeaders = { "Name", "Club", "Minutes", "Goals", "Minutes Per Goal", "Shots", "Shots On Target", "Big Chances Missed",  };
     private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Clean Sheets", "Saves", 
                                                                 "Pass Completion (%)", "Long Ball Completion (%)", "Errors Leading To Shot", "Average Rating" };
     private readonly string[] _defendingStatsTableHeaders = { "Name", "Club", "Appearances", "Minutes", "Duels Won (%)", "Aerial Duels Won (%)",
@@ -200,6 +201,14 @@ else
         outfieldPlayers = players.Where(p => p.Position != "G");
         goalkeeperPlayers = players.Where(p => p.Position == "G");
         players = outfieldPlayers;
+    }
+
+    private string CalculateMinutesPerGoal(double minutes, double goals)
+    {
+        if(goals == 0)
+            return "-";
+
+        return Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString();
     }
 
     private void SortStatDescending(string stat)
@@ -233,8 +242,8 @@ else
             case "Minutes":
                 players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
                 break;
-            case "Appearances":
-                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+            case "Minutes Per Goal":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed / p.OverallStatsDto.Goals);
                 break;
             case "Shots":
                 players = players.OrderByDescending(p => p.OverallStatsDto.TotalShotsTaken);
@@ -358,7 +367,7 @@ else
     private void DisplayOutfielders()
     {
         players = outfieldPlayers;
-        statsToDisplay = StatCategory.Attacking;
+        statsToDisplay = StatCategory.General;
     }
 
     private void DisplayGoalkeepers()
