@@ -18,10 +18,12 @@
 else
 {
     //pagination
-    //use dropdowns for filtering. look up how to do this, probably requires binding selected value to a variable
-    //switch stmt on variable to display relevant data
+    //get some divs involved
+    //add logic to grey out goalkeeping stats if not viewing goalkeepers 
+    //add table headers for passing and misc stats
+    //investigate multiple selections.. just use a switch because so few permutations?
 
-    <label for="player-selector">Filter Categories/Positions</label>
+    <label for="player-selector">Filter Categories/Positions: </label>
     <select id="player-selector" @onchange="SelectedCategoryChanged">
         <optgroup label="Categories"></optgroup>
             <option value="All">All Players</option>
@@ -33,11 +35,17 @@ else
             <option value="Forwards">Forwards</option>
     </select>
 
-    <br /><br />
+    <br />
 
-    <button type="button" @onclick="DisplayDefensiveStats">Defensive Stats</button>
-    <button type="button" @onclick="DisplayAttackingStats">Attacking Stats</button>
-    <button type="button" @onclick="DisplayGeneralStats">General Stats</button>
+    <label for="stat-selector">Filter Stats: </label>
+    <select id="player-selector" @onchange="SelectedStatsCategoryChanged">
+        <option value="GeneralStats">General</option>?
+        <option value="GoalkeepingStats">Goalkeeping</option>
+        <option value="DefendingStats">Defending</option>
+        <option value="ShootingStats">Shooting</option>
+        <option value="PassingStats">Passing</option>
+        <option value="MiscStats">Misc</option>
+    </select>
 
     <br /> <br />
     <button type="button" @onclick="DisplayTotal">Total</button>
@@ -49,7 +57,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        @foreach(var header in _generalStatsTableHeaders)
+                        @foreach(var header in Utils.TableHeaders._generalStatsTableHeaders)
                         {
                             <th>
                                 @header
@@ -83,7 +91,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        @foreach(var header in _shootingStatsTableHeaders)
+                        @foreach(var header in Utils.TableHeaders._shootingStatsTableHeaders)
                         {
                             <th>
                                 @header
@@ -117,7 +125,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        @foreach(var header in _goalkeepingStatsTableHeaders)
+                        @foreach(var header in Utils.TableHeaders._goalkeepingStatsTableHeaders)
                         {
                             <th>
                                 @header
@@ -152,7 +160,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        @foreach(var header in _defendingStatsTableHeaders)
+                        @foreach(var header in Utils.TableHeaders._defendingStatsTableHeaders)
                         {
                             <th>
                                 @header
@@ -195,14 +203,6 @@ else
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
 
-    private readonly string[] _shootingStatsTableHeaders = { "Name", "Club", "Minutes", "Goals", "Minutes Per Goal", "Shots", "Shots On Target", "Big Chances Missed",  };
-    private readonly string[] _goalkeepingStatsTableHeaders = { "Name", "Club", "Appearances", "Clean Sheets", "Saves", 
-                                                                "Pass Completion (%)", "Long Ball Completion (%)", "Errors Leading To Shot", "Average Rating" };
-    private readonly string[] _defendingStatsTableHeaders = { "Name", "Club", "Appearances", "Minutes", "Duels Won (%)", "Aerial Duels Won (%)",
-                                                              "Tackles", "Shots Blocked", "Errors Leading To Shot" };
-    private readonly string[] _generalStatsTableHeaders = { "Name", "Club", "Age", "Appearances", "Minutes", "Goals", "Assists", "Average Rating" };
-
-
     protected override async Task OnInitializedAsync()
     {
         players = await Http.GetFromJsonAsync<IEnumerable<PlayerDto>>("http://localhost:5247/api/Players/overall");
@@ -235,6 +235,34 @@ else
                     break;
                 case "Forwards":
                     DisplayForwards();
+                    break;
+            }
+        }
+    }
+
+    private void SelectedStatsCategoryChanged(ChangeEventArgs e)
+    {
+        if(e.Value != null)
+        {
+            switch (e.Value.ToString())
+            {
+                case "GoalkeepingStats":
+                    statsToDisplay = StatCategory.Goalkeeping;
+                    break;
+                case "DefendingStats":
+                    statsToDisplay = StatCategory.Defending;
+                    break;
+                case "ShootingStats":
+                    statsToDisplay = StatCategory.Attacking;
+                    break;
+                case "PassingStats":
+                    statsToDisplay = StatCategory.Passing;
+                    break;
+                case "GeneralStats":
+                    statsToDisplay = StatCategory.General;
+                    break;
+                case "MiscStats":
+                    statsToDisplay = StatCategory.Misc;
                     break;
             }
         }
