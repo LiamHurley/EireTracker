@@ -18,10 +18,20 @@
 else
 {
     //pagination
+    //use dropdowns for filtering. look up how to do this, probably requires binding selected value to a variable
+    //switch stmt on variable to display relevant data
 
-    <button type="button" @onclick="DisplayOutfielders">Show Outfielders</button>
-    <button type="button" @onclick="DisplayGoalkeepers">Show Goalkeepers</button>
-    <button type="button" @onclick="DisplayAllPlayers">Show All</button>
+    <label for="player-selector">Filter Categories/Positions</label>
+    <select id="player-selector" @onchange="SelectedCategoryChanged">
+        <optgroup label="Categories"></optgroup>
+            <option value="All">All Players</option>
+            <option value="Outfielders">Outfielders</option>
+        <optgroup label="Positions"></optgroup>
+            <option value="Goalkeepers">Goalkeepers</option>
+            <option value="Defenders">Defenders</option>
+            <option value="Midfielders">Midfielders</option>
+            <option value="Forwards">Forwards</option>
+    </select>
 
     <br /><br />
 
@@ -174,7 +184,6 @@ else
             </table>
             break;
     }
-
 }
 
 @code {
@@ -201,6 +210,34 @@ else
         outfieldPlayers = players.Where(p => p.Position != "G");
         goalkeeperPlayers = players.Where(p => p.Position == "G");
         players = outfieldPlayers;
+    }
+
+    private void SelectedCategoryChanged(ChangeEventArgs e)
+    {
+        if(e.Value != null)
+        {
+            switch (e.Value.ToString())
+            {
+                case "Goalkeepers":
+                    DisplayGoalkeepers();
+                    break;
+                case "All":
+                    DisplayAllPlayers();
+                    break;
+                case "Outfielders":
+                    DisplayOutfielders();
+                    break;
+                case "Defenders":
+                    DisplayDefenders();
+                    break;
+                case "Midfielders":
+                    DisplayMidfielders();
+                    break;
+                case "Forwards":
+                    DisplayForwards();
+                    break;
+            }
+        }
     }
 
     private string CalculateAndDisplayMinutesPerGoal(double minutes, double goals) 
@@ -487,6 +524,24 @@ else
     private void DisplayOutfielders()
     {
         players = outfieldPlayers;
+        statsToDisplay = StatCategory.General;
+    }
+
+    private void DisplayDefenders()
+    {
+        players = outfieldPlayers.Where(p => p.Position == "D");
+        statsToDisplay = StatCategory.General;
+    }
+
+    private void DisplayMidfielders()
+    {
+        players = outfieldPlayers.Where(p => p.Position == "M");
+        statsToDisplay = StatCategory.General;
+    }
+
+    private void DisplayForwards()
+    {
+        players = outfieldPlayers.Where(p => p.Position == "F");
         statsToDisplay = StatCategory.General;
     }
 
