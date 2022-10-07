@@ -203,14 +203,8 @@ else
         players = outfieldPlayers;
     }
 
-    private string CalculateMinutesPerGoal(double minutes, double goals)
-    {
-        if(goals == 0)
-            return "-";
-
-        return Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString();
-    }
-
+    private string CalculateMinutesPerGoal(double minutes, double goals) => goals != 0 ? Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
+    
     private void SortStatDescending(string stat)
     {
         switch (statsToDisplay)
