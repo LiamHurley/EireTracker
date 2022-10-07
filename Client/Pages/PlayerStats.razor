@@ -94,7 +94,7 @@ else
                         <td>@player.Club</td>
                         <td>@player.OverallStatsDto.MinutesPlayed</td>
                         <td>@player.OverallStatsDto.Goals</td>
-                        <td>@CalculateMinutesPerGoal(@player.OverallStatsDto.MinutesPlayed, @player.OverallStatsDto.Goals)</td>
+                        <td>@CalculateAndDisplayMinutesPerGoal(@player.OverallStatsDto.MinutesPlayed, @player.OverallStatsDto.Goals)</td>
                         <td>@player.OverallStatsDto.TotalShotsTaken</td>
                         <td>@player.OverallStatsDto.OnTargetScoringAttempt</td>
                         <td>@player.OverallStatsDto.BigChanceMissed</td>
@@ -203,7 +203,16 @@ else
         players = outfieldPlayers;
     }
 
-    private string CalculateMinutesPerGoal(double minutes, double goals) => goals != 0 ? Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
+    private string CalculateAndDisplayMinutesPerGoal(double minutes, double goals) 
+    {
+        if(isPerNinety)
+        {
+            var actualGoals = Math.Round((goals / 90 * minutes), 0, MidpointRounding.AwayFromZero);
+            return actualGoals != 0 ? Math.Round(minutes / actualGoals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
+        }
+        
+        return goals != 0 ? Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
+    }
     
     private void SortStatDescending(string stat)
     {
@@ -226,7 +235,21 @@ else
 
     private void SortStatAscending(string stat)
     {
-
+        switch (statsToDisplay)
+        {
+            case StatCategory.General:
+                SortGeneralStatAscending(stat);
+                break;
+            case StatCategory.Attacking:
+                SortAttackingStatAscending(stat);
+                break;
+            case StatCategory.Defending:
+                SortDefendingStatAscending(stat);
+                break;
+            case StatCategory.Goalkeeping:
+                SortGoalkeepingStatAscending(stat);
+                break;
+        }
     }
 
     private void SortAttackingStatDescending(string stat)
@@ -328,6 +351,109 @@ else
                 break;
             case "Average Rating":
                 players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortAttackingStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Minutes Per Goal":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed / p.OverallStatsDto.Goals);
+                break;
+            case "Shots":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalShotsTaken);
+                break;
+            case "Shots On Target":
+                players = players.OrderBy(p => p.OverallStatsDto.OnTargetScoringAttempt);
+                break;
+            case "Big Chances Missed":
+                players = players.OrderBy(p => p.OverallStatsDto.BigChanceMissed);
+                break;
+            case "Goals":
+                players = players.OrderBy(p => p.OverallStatsDto.Goals);
+                break;
+        }
+    }
+
+    private void SortGeneralStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Goals":
+                players = players.OrderBy(p => p.OverallStatsDto.Goals);
+                break;
+            case "Assists":
+                players = players.OrderBy(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortDefendingStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Duels Won (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.DuelWon / p.OverallStatsDto.TotalDuels);
+                break;
+            case "Aerial Duels Won (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AerialWon / p.OverallStatsDto.TotalAerialDuels);
+                break;
+            case "Tackles":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalTackle);
+                break;
+            case "Shots Blocked":
+                players = players.OrderBy(p => p.OverallStatsDto.OutfielderBlock);
+                break;
+            case "Errors Leading To Shot":
+                players = players.OrderBy(p => p.OverallStatsDto.ErrorLeadToAShot);
+                break;
+        }
+    }
+
+    private void SortGoalkeepingStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Clean Sheets":
+                players = players.OrderBy(p => p.OverallStatsDto.CleanSheets);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Saves":
+                players = players.OrderBy(p => p.OverallStatsDto.Saves);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+            case "Errors Leading To Shot":
+                players = players.OrderBy(p => p.OverallStatsDto.ErrorLeadToAShot);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
                 break;
         }
     }
