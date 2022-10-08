@@ -19,9 +19,8 @@ else
 {
     //pagination
     //get some divs involved
-    //add logic to grey out goalkeeping stats if not viewing goalkeepers 
-    //add table headers for passing and misc stats
-    //investigate multiple selections.. just use a switch because so few permutations?
+    //add logic to grey out goalkeeping stats if not viewing goalkeepers
+    
 
     <label for="player-selector">Filter Categories/Positions: </label>
     <select id="player-selector" @onchange="SelectedCategoryChanged">
@@ -59,14 +58,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._generalStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -273,6 +265,9 @@ else
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
 
+    private string[] TableHeaders = new string[] { };
+    private string[] SortStatuses;
+
     protected override async Task OnInitializedAsync()
     {
         players = await Http.GetFromJsonAsync<IEnumerable<PlayerDto>>("http://localhost:5247/api/Players/overall");
@@ -280,6 +275,41 @@ else
         outfieldPlayers = players.Where(p => p.Position != "G");
         goalkeeperPlayers = players.Where(p => p.Position == "G");
         players = outfieldPlayers;
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._defendingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._shootingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._passingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._generalStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._goalkeepingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._miscStatsTableHeaders).ToArray();
+        SortStatuses = new string[TableHeaders.Length];
+        Array.Fill(SortStatuses, "unsorted");
+    }
+
+    private void SortStat(string header)
+    {
+        //2 global arrays, one containing header names, one containing string values to show sorted order
+        //string values can be: unsorted, descending, ascending
+        //when sorting by a stat, set all others to unsorted
+        int indexOfStat = TableHeaders.ToList().IndexOf(header);
+        if(SortStatuses[indexOfStat].Equals("unsorted"))
+        {
+            Array.Fill(SortStatuses, "unsorted");
+            SortStatuses[indexOfStat] = "descending";
+            SortStatDescending(header);
+        }
+        else if (SortStatuses[indexOfStat].Equals("descending"))
+        {
+            Array.Fill(SortStatuses, "unsorted");
+            SortStatuses[indexOfStat] = "ascending";
+            SortStatAscending(header);
+        }
+        else
+        {
+            Array.Fill(SortStatuses, "unsorted");
+            SortStatuses[indexOfStat] = "descending";
+            SortStatDescending(header);
+        }
+        //use value of sort status to decide which sort method to use (if unsorted, sort desc. if desc, sort asc. if asc, sort desc.)
     }
 
     private void SelectedCategoryChanged(ChangeEventArgs e)
