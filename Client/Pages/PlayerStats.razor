@@ -191,6 +191,76 @@ else
                 </tbody>
             </table>
             break;
+        case StatCategory.Passing:
+            <table class="table">
+                <thead>
+                    <tr>
+                        @foreach(var header in Utils.TableHeaders._passingStatsTableHeaders)
+                        {
+                            <th>
+                                @header
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var player in players)
+                    {
+                        <tr>
+                            <td>@player.Name</td>
+                            <td>@player.Club</td>
+                            <td>@player.OverallStatsDto.MatchesPlayed</td>
+                            <td>@player.OverallStatsDto.MinutesPlayed</td>
+                            <td>@player.OverallStatsDto.GoalAssist</td>
+                            <td>@player.OverallStatsDto.TotalPass</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AccuratePass, @player.OverallStatsDto.TotalPass)</td>
+                            <td>@player.OverallStatsDto.KeyPass</td>
+                            <td>@player.CalculatePercentage(@player.OverallStatsDto.AccurateLongBalls, @player.OverallStatsDto.TotalLongBalls)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            break;
+        case StatCategory.Misc:
+            <table class="table">
+                <thead>
+                    <tr>
+                        @foreach(var header in Utils.TableHeaders._miscStatsTableHeaders)
+                        {
+                            <th>
+                                @header
+                                @if (Utils.IsASortableStat(header))
+                                {
+                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
+                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
+                                }
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var player in players)
+                    {
+                        <tr>
+                            <td>@player.Name</td>
+                            <td>@player.Club</td>
+                            <td>@player.OverallStatsDto.MatchesPlayed</td>
+                            <td>@player.OverallStatsDto.MinutesPlayed</td>
+                            <td>@player.OverallStatsDto.Touches</td>
+                            <td>@player.OverallStatsDto.Captain</td>
+                            <td>@player.OverallStatsDto.TotalOffside</td>
+                            <td>@player.OverallStatsDto.Fouls</td>
+                            <td>@player.OverallStatsDto.WasFouled</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            break;
     }
 }
 
