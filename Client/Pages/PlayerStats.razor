@@ -20,8 +20,10 @@ else
     //pagination
     //get some divs involved
     //add logic to grey out goalkeeping stats if not viewing goalkeepers
+    //use classes for views and logic and put methods into the classes? this can be done later on
     
 
+    //get this stuff in one div across the top of the table
     <label for="player-selector">Filter Categories/Positions: </label>
     <select id="player-selector" @onchange="SelectedCategoryChanged">
         <optgroup label="Categories"></optgroup>
@@ -37,7 +39,7 @@ else
     <br />
 
     <label for="stat-selector">Filter Stats: </label>
-    <select id="player-selector" @onchange="SelectedStatsCategoryChanged">
+    <select id="stat-selector" @onchange="SelectedStatsCategoryChanged">
         <option value="GeneralStats">General</option>?
         <option value="GoalkeepingStats">Goalkeeping</option>
         <option value="DefendingStats">Defending</option>
@@ -49,6 +51,14 @@ else
     <br /> <br />
     <button type="button" @onclick="DisplayTotal">Total</button>
     <button type="button" @onclick="DisplayPerNinety">P90</button>
+
+    <label for="records-selector">Records Per Page: </label>
+    <select id="records-selector" @onchange="SelectedRecordsPerPageChanged">
+        <option value="All">All</option>?
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+    </select>
 
     switch(statsToDisplay)
     {
@@ -219,6 +229,12 @@ else
             </table>
             break;
     }
+
+    @for(int i=1; i<=numberOfPages; i++)
+    {
+        <button>@i</button>
+    }
+
 }
 
 @code {
@@ -229,6 +245,8 @@ else
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
+    private string recordsPerPage = "all";
+    private int numberOfPages = 1;
 
     private string[] TableHeaders = new string[] { };
     private string[] SortStatuses;
@@ -267,6 +285,22 @@ else
             SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
             SortStatDescending(header);
         }
+    }
+
+    private void SelectedRecordsPerPageChanged(ChangeEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            switch (e.Value.ToString())
+            {
+                case "All":
+                    break;
+                case "10":
+                    numberOfPages = 10;
+                    players = players.Take(10);
+                    break;
+            }
+        }    
     }
 
     private void SelectedCategoryChanged(ChangeEventArgs e)
