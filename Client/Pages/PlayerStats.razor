@@ -247,34 +247,30 @@ else
         TableHeaders = TableHeaders.Concat(Utils.TableHeaders._goalkeepingStatsTableHeaders).ToArray();
         TableHeaders = TableHeaders.Concat(Utils.TableHeaders._miscStatsTableHeaders).ToArray();
         SortStatuses = new string[TableHeaders.Length];
-        Array.Fill(SortStatuses, "unsorted");
+        Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
     }
 
     private void SortStat(string header)
     {
-        //2 global arrays, one containing header names, one containing string values to show sorted order
-        //string values can be: unsorted, descending, ascending
-        //when sorting by a stat, set all others to unsorted
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
-        if(SortStatuses[indexOfStat].Equals("unsorted"))
+        if(SortStatuses[indexOfStat].Equals(StatSortedStatus.Unsorted.ToString()))
         {
-            Array.Fill(SortStatuses, "unsorted");
-            SortStatuses[indexOfStat] = "descending";
+            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
             SortStatDescending(header);
         }
-        else if (SortStatuses[indexOfStat].Equals("descending"))
+        else if (SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
         {
-            Array.Fill(SortStatuses, "unsorted");
-            SortStatuses[indexOfStat] = "ascending";
+            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+            SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
             SortStatAscending(header);
         }
         else
         {
-            Array.Fill(SortStatuses, "unsorted");
-            SortStatuses[indexOfStat] = "descending";
+            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
             SortStatDescending(header);
         }
-        //use value of sort status to decide which sort method to use (if unsorted, sort desc. if desc, sort asc. if asc, sort desc.)
     }
 
     private void SelectedCategoryChanged(ChangeEventArgs e)
