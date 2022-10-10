@@ -240,19 +240,15 @@ else
         outfieldPlayers = players.Where(p => p.Position != "G");
         goalkeeperPlayers = players.Where(p => p.Position == "G");
         players = outfieldPlayers;
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._defendingStatsTableHeaders).ToArray();
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._shootingStatsTableHeaders).ToArray();
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._passingStatsTableHeaders).ToArray();
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._generalStatsTableHeaders).ToArray();
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._goalkeepingStatsTableHeaders).ToArray();
-        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._miscStatsTableHeaders).ToArray();
-        SortStatuses = new string[TableHeaders.Length];
-        Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+        PopulateTableHeadersArray();
+        PopulateSortStatusArray();
     }
 
     private void SortStat(string header)
     {
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
+        // use Array.Fill just once before any if statements
+        // remove the else..
         if(SortStatuses[indexOfStat].Equals(StatSortedStatus.Unsorted.ToString()))
         {
             Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
@@ -336,10 +332,10 @@ else
             var actualGoals = Math.Round((goals / 90 * minutes), 0, MidpointRounding.AwayFromZero);
             return actualGoals != 0 ? Math.Round(minutes / actualGoals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
         }
-        
+
         return goals != 0 ? Math.Round(minutes / goals, 2, MidpointRounding.AwayFromZero).ToString() : "-";
     }
-    
+
     private void SortStatDescending(string stat)
     {
         switch (statsToDisplay)
@@ -661,5 +657,21 @@ else
     private void DisplayGeneralStats()
     {
         statsToDisplay = StatCategory.General;
+    }
+
+    private void PopulateTableHeadersArray()
+    {
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._defendingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._shootingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._passingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._generalStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._goalkeepingStatsTableHeaders).ToArray();
+        TableHeaders = TableHeaders.Concat(Utils.TableHeaders._miscStatsTableHeaders).ToArray();
+    }
+
+    private void PopulateSortStatusArray()
+    {
+        SortStatuses = new string[TableHeaders.Length];
+        Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
     }
 }
