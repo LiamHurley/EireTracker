@@ -85,14 +85,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._shootingStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -119,14 +112,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._goalkeepingStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -154,14 +140,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._defendingStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -189,14 +168,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._passingStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
@@ -224,14 +196,7 @@ else
                     <tr>
                         @foreach(var header in Utils.TableHeaders._miscStatsTableHeaders)
                         {
-                            <th>
-                                @header
-                                @if (Utils.IsASortableStat(header))
-                                {
-                                    <button type="button" @onclick="() => SortStatDescending(header)">D</button>
-                                    <button type="button" @onclick="() => SortStatAscending(header)">A</button>
-                                }
-                            </th>
+                            <th @onclick="() => SortStat(header)">@header</th>
                         }
                     </tr>
                 </thead>
