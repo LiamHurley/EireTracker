@@ -232,7 +232,7 @@ else
 
     @for(int i=1; i<=numberOfPages; i++)
     {
-        <button>@i</button>
+        <button @onclick="() => NextPage(i)">@i</button>
     }
 
 }
@@ -242,11 +242,13 @@ else
     private IEnumerable<PlayerDto>? allPlayers;
     private IEnumerable<PlayerDto>? outfieldPlayers;
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
+    private IEnumerable<PlayerDto> previousPlayersState;
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
     private string recordsPerPage = "all";
     private int numberOfPages = 1;
+    private int position = 0;
 
     private string[] TableHeaders = new string[] { };
     private string[] SortStatuses;
@@ -287,6 +289,11 @@ else
         }
     }
 
+    private void NextPage(int pageNumber)
+    {
+        players = previousPlayersState.Skip(int.Parse(recordsPerPage)).Take(int.Parse(recordsPerPage));
+    }
+
     private void SelectedRecordsPerPageChanged(ChangeEventArgs e)
     {
         if (!string.IsNullOrEmpty(e.Value.ToString()))
@@ -296,7 +303,9 @@ else
                 case "All":
                     break;
                 case "10":
-                    numberOfPages = 10;
+                    recordsPerPage = "10";
+                    numberOfPages = (int)(Math.Round((double)(players.Count() / int.Parse(recordsPerPage)), 0, MidpointRounding.ToPositiveInfinity));
+                    previousPlayersState = players;
                     players = players.Take(10);
                     break;
             }
