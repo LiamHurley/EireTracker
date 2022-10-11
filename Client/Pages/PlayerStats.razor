@@ -235,7 +235,6 @@ else
         int valueOfButton = i;
         <button @onclick="() => NextPage(valueOfButton)">@i</button>
     }
-
 }
 
 @code {
@@ -243,7 +242,7 @@ else
     private IEnumerable<PlayerDto>? allPlayers;
     private IEnumerable<PlayerDto>? outfieldPlayers;
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
-    private IEnumerable<PlayerDto> previousPlayersState;
+    private IEnumerable<PlayerDto>? previousPlayersState;
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
@@ -301,17 +300,14 @@ else
     {
         if (!string.IsNullOrEmpty(e.Value.ToString()))
         {
-            switch (e.Value.ToString())
-            {
-                case "All":
-                    break;
-                case "10":
-                    recordsPerPage = "10";
-                    numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
-                    previousPlayersState = players;
-                    players = players.Take(10);
-                    break;
-            }
+            if (e.Value.ToString() == "All")
+                return;
+
+            recordsPerPage = e.Value.ToString();
+            players = outfieldPlayers;
+            previousPlayersState = outfieldPlayers;
+            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+            players = players.Take(int.Parse(recordsPerPage));
         }    
     }
 
