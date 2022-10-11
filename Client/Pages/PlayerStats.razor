@@ -232,7 +232,8 @@ else
 
     @for(int i=1; i<=numberOfPages; i++)
     {
-        <button @onclick="() => NextPage(i)">@i</button>
+        int valueOfButton = i;
+        <button @onclick="() => NextPage(valueOfButton)">@i</button>
     }
 
 }
@@ -291,7 +292,10 @@ else
 
     private void NextPage(int pageNumber)
     {
-        players = previousPlayersState.Skip(int.Parse(recordsPerPage)).Take(int.Parse(recordsPerPage));
+        Console.WriteLine(pageNumber);
+        players = previousPlayersState
+                    .Skip((pageNumber - 1) * int.Parse(recordsPerPage))
+                    .Take(int.Parse(recordsPerPage));
     }
 
     private void SelectedRecordsPerPageChanged(ChangeEventArgs e)
@@ -304,7 +308,7 @@ else
                     break;
                 case "10":
                     recordsPerPage = "10";
-                    numberOfPages = (int)(Math.Round((double)(players.Count() / int.Parse(recordsPerPage)), 0, MidpointRounding.ToPositiveInfinity));
+                    numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
                     previousPlayersState = players;
                     players = players.Take(10);
                     break;
