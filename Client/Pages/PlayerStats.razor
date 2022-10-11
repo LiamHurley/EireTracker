@@ -292,7 +292,6 @@ else
 
     private void NextPage(int pageNumber)
     {
-        Console.WriteLine(pageNumber);
         players = previousPlayersState
                     .Skip((pageNumber - 1) * int.Parse(recordsPerPage))
                     .Take(int.Parse(recordsPerPage));
