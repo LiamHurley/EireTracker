@@ -266,23 +266,46 @@ else
 
     private void SortStat(string header)
     {
-        //if paginated
-        //sort all players by the selected stat
-        //take first 10/20/50
-
-        int indexOfStat = TableHeaders.ToList().IndexOf(header);
+        //prioritise for refactor
         
-        if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
+        int indexOfStat = TableHeaders.ToList().IndexOf(header);
+
+        if (!recordsPerPage.Equals("all"))
         {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
-            SortStatDescending(header);
+            if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
+                players = previousPlayersState;
+                SortStatDescending(header);
+                previousPlayersState = players;
+                players = players.Take(int.Parse(recordsPerPage));
+            }
+            else
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
+                players = previousPlayersState;
+                SortStatAscending(header);
+                previousPlayersState = players;
+                players = players.Take(int.Parse(recordsPerPage));
+            }
         }
+
         else
         {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
-            SortStatAscending(header); 
+            if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
+                SortStatDescending(header);
+            }
+            else
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
+                SortStatAscending(header); 
+            }
         }
     }
 
@@ -301,6 +324,8 @@ else
                 return;
 
             recordsPerPage = e.Value.ToString();
+            //change code here to set players and previousPlayersState to only hold the correct types of players.
+            //enum of positions? should really probably be using classes here 
             players = outfieldPlayers;
             previousPlayersState = outfieldPlayers;
             numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
