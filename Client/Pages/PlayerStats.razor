@@ -17,7 +17,7 @@
 }
 else
 {
-    //pagination
+    //what happens when we sort a stat when paginating? TODO!
     //get some divs involved
     //add logic to grey out goalkeeping stats if not viewing goalkeepers
     //use classes for views and logic and put methods into the classes? this can be done later on
@@ -266,26 +266,23 @@ else
 
     private void SortStat(string header)
     {
+        //if paginated
+        //sort all players by the selected stat
+        //take first 10/20/50
+
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
-        // use Array.Fill just once before any if statements
-        // remove the else..
-        if(SortStatuses[indexOfStat].Equals(StatSortedStatus.Unsorted.ToString()))
+        
+        if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
         {
             Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
             SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
             SortStatDescending(header);
-        }
-        else if (SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
-        {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
-            SortStatAscending(header);
         }
         else
         {
             Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
-            SortStatDescending(header);
+            SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
+            SortStatAscending(header); 
         }
     }
 
