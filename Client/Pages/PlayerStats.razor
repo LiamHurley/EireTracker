@@ -17,12 +17,13 @@
 }
 else
 {
-    //what happens when we sort a stat when paginating? TODO!
+    //make sure filtered stats persist when changing category TODO
+    //investigate why passing and misc stats aren't sorting
+    
     //get some divs involved
     //add logic to grey out goalkeeping stats if not viewing goalkeepers
     //use classes for views and logic and put methods into the classes? this can be done later on
     
-
     //get this stuff in one div across the top of the table
     <label for="player-selector">Filter Categories/Positions: </label>
     <select id="player-selector" @onchange="SelectedCategoryChanged">
@@ -244,6 +245,8 @@ else
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
     private IEnumerable<PlayerDto>? previousPlayersState;
 
+    private string positionSelected = "";
+
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
     private string recordsPerPage = "all";
@@ -267,7 +270,7 @@ else
     private void SortStat(string header)
     {
         //prioritise for refactor
-        
+
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
 
         if (!recordsPerPage.Equals("all"))
@@ -324,20 +327,8 @@ else
                 return;
 
             recordsPerPage = e.Value.ToString();
-            //change code here to set players and previousPlayersState to only hold the correct types of players.
-            //enum of positions? should really probably be using classes here 
-            players = outfieldPlayers;
-            previousPlayersState = outfieldPlayers;
-            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
-            players = players.Take(int.Parse(recordsPerPage));
-        }    
-    }
-
-    private void SelectedCategoryChanged(ChangeEventArgs e)
-    {
-        if(e.Value != null)
-        {
-            switch (e.Value.ToString())
+            
+            switch (positionSelected)
             {
                 case "Goalkeepers":
                     DisplayGoalkeepers();
@@ -356,6 +347,50 @@ else
                     break;
                 case "Forwards":
                     DisplayForwards();
+                    break;
+            }
+
+            previousPlayersState = players;
+            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+            players = players.Take(int.Parse(recordsPerPage));
+        }    
+    }
+
+    private void SelectedCategoryChanged(ChangeEventArgs e)
+    {
+        if(e.Value != null)
+        {
+            switch (e.Value.ToString())
+            {
+                case "Goalkeepers":
+                    positionSelected = "Goalkeepers";
+                    DisplayGoalkeepers();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "All":
+                    positionSelected = "All";
+                    DisplayAllPlayers();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Outfielders":
+                    positionSelected = "Outfielders";
+                    DisplayOutfielders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Defenders":
+                    positionSelected = "Defenders";
+                    DisplayDefenders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Midfielders":
+                    positionSelected = "Midfielders";
+                    DisplayMidfielders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Forwards":
+                    positionSelected = "Forwards";
+                    DisplayForwards();
+                    PaginateNewlySelectedCategory();
                     break;
             }
         }
@@ -737,5 +772,15 @@ else
     {
         SortStatuses = new string[TableHeaders.Length];
         Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+    }
+
+    private void PaginateNewlySelectedCategory()
+    {
+        if (!recordsPerPage.Equals("all"))
+        {
+            previousPlayersState = players;
+            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+            players = players.Take(int.Parse(recordsPerPage));
+        }
     }
 }
