@@ -17,12 +17,13 @@
 }
 else
 {
-    //pagination
+    //make sure filtered stats persist when changing category TODO
+    //investigate why passing and misc stats aren't sorting
+    
     //get some divs involved
     //add logic to grey out goalkeeping stats if not viewing goalkeepers
     //use classes for views and logic and put methods into the classes? this can be done later on
     
-
     //get this stuff in one div across the top of the table
     <label for="player-selector">Filter Categories/Positions: </label>
     <select id="player-selector" @onchange="SelectedCategoryChanged">
@@ -232,9 +233,9 @@ else
 
     @for(int i=1; i<=numberOfPages; i++)
     {
-        <button>@i</button>
+        int valueOfButton = i;
+        <button @onclick="() => NextPage(valueOfButton)">@i</button>
     }
-
 }
 
 @code {
@@ -242,11 +243,15 @@ else
     private IEnumerable<PlayerDto>? allPlayers;
     private IEnumerable<PlayerDto>? outfieldPlayers;
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
+    private IEnumerable<PlayerDto>? previousPlayersState;
+
+    private string positionSelected = "";
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
     private string recordsPerPage = "all";
     private int numberOfPages = 1;
+    private int position = 0;
 
     private string[] TableHeaders = new string[] { };
     private string[] SortStatuses;
@@ -264,50 +269,65 @@ else
 
     private void SortStat(string header)
     {
+        //prioritise for refactor
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
-        // use Array.Fill just once before any if statements
-        // remove the else..
-        if(SortStatuses[indexOfStat].Equals(StatSortedStatus.Unsorted.ToString()))
+
+        if (!recordsPerPage.Equals("all"))
         {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
-            SortStatDescending(header);
+            if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
+                players = previousPlayersState;
+                SortStatDescending(header);
+                previousPlayersState = players;
+                players = players.Take(int.Parse(recordsPerPage));
+            }
+            else
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
+                players = previousPlayersState;
+                SortStatAscending(header);
+                previousPlayersState = players;
+                players = players.Take(int.Parse(recordsPerPage));
+            }
         }
-        else if (SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
-        {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
-            SortStatAscending(header);
-        }
+
         else
         {
-            Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
-            SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
-            SortStatDescending(header);
+            if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Descending.ToString();
+                SortStatDescending(header);
+            }
+            else
+            {
+                Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+                SortStatuses[indexOfStat] = StatSortedStatus.Ascending.ToString();
+                SortStatAscending(header); 
+            }
         }
+    }
+
+    private void NextPage(int pageNumber)
+    {
+        players = previousPlayersState
+                    .Skip((pageNumber - 1) * int.Parse(recordsPerPage))
+                    .Take(int.Parse(recordsPerPage));
     }
 
     private void SelectedRecordsPerPageChanged(ChangeEventArgs e)
     {
         if (!string.IsNullOrEmpty(e.Value.ToString()))
         {
-            switch (e.Value.ToString())
-            {
-                case "All":
-                    break;
-                case "10":
-                    numberOfPages = 10;
-                    players = players.Take(10);
-                    break;
-            }
-        }    
-    }
+            if (e.Value.ToString() == "All")
+                return;
 
-    private void SelectedCategoryChanged(ChangeEventArgs e)
-    {
-        if(e.Value != null)
-        {
-            switch (e.Value.ToString())
+            recordsPerPage = e.Value.ToString();
+
+            switch (positionSelected)
             {
                 case "Goalkeepers":
                     DisplayGoalkeepers();
@@ -326,6 +346,50 @@ else
                     break;
                 case "Forwards":
                     DisplayForwards();
+                    break;
+            }
+
+            previousPlayersState = players;
+            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+            players = players.Take(int.Parse(recordsPerPage));
+        }    
+    }
+
+    private void SelectedCategoryChanged(ChangeEventArgs e)
+    {
+        if(e.Value != null)
+        {
+            switch (e.Value.ToString())
+            {
+                case "Goalkeepers":
+                    positionSelected = "Goalkeepers";
+                    DisplayGoalkeepers();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "All":
+                    positionSelected = "All";
+                    DisplayAllPlayers();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Outfielders":
+                    positionSelected = "Outfielders";
+                    DisplayOutfielders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Defenders":
+                    positionSelected = "Defenders";
+                    DisplayDefenders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Midfielders":
+                    positionSelected = "Midfielders";
+                    DisplayMidfielders();
+                    PaginateNewlySelectedCategory();
+                    break;
+                case "Forwards":
+                    positionSelected = "Forwards";
+                    DisplayForwards();
+                    PaginateNewlySelectedCategory();
                     break;
             }
         }
@@ -386,6 +450,12 @@ else
             case StatCategory.Goalkeeping:
                 SortGoalkeepingStatDescending(stat);
                 break;
+            case StatCategory.Passing:
+                SortPassingStatDescending(stat);
+                break;
+            case StatCategory.Misc:
+                SortMiscStatDescending(stat);
+                break;
         }
     }
 
@@ -404,6 +474,12 @@ else
                 break;
             case StatCategory.Goalkeeping:
                 SortGoalkeepingStatAscending(stat);
+                break;
+            case StatCategory.Passing:
+                SortPassingStatAscending(stat);
+                break;
+            case StatCategory.Misc:
+                SortMiscStatAscending(stat);
                 break;
         }
     }
@@ -451,6 +527,68 @@ else
                 break;
             case "Average Rating":
                 players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortPassingStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Passes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalPass);
+                break;
+            case "Assists":
+                players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Key Passes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.KeyPass);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+        }
+    }
+
+    private void SortMiscStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Touches":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Touches);
+                break;
+            case "Offsides":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalOffside);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Captain":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Captain);
+                break;
+            case "Fouls":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Fouls);
+                break;
+            case "Fouls Won":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.WasFouled);
                 break;
         }
     }
@@ -554,6 +692,68 @@ else
                 break;
             case "Average Rating":
                 players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortPassingStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Passes":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalPass);
+                break;
+            case "Assists":
+                players = players.OrderBy(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Key Passes":
+                players = players.OrderBy(p => p.OverallStatsDto.KeyPass);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+        }
+    }
+
+    private void SortMiscStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Touches":
+                players = players.OrderBy(p => p.OverallStatsDto.Touches);
+                break;
+            case "Offsides":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalOffside);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Captain":
+                players = players.OrderBy(p => p.OverallStatsDto.Captain);
+                break;
+            case "Fouls":
+                players = players.OrderBy(p => p.OverallStatsDto.Fouls);
+                break;
+            case "Fouls Won":
+                players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.WasFouled);
                 break;
         }
     }
@@ -707,5 +907,15 @@ else
     {
         SortStatuses = new string[TableHeaders.Length];
         Array.Fill(SortStatuses, StatSortedStatus.Unsorted.ToString());
+    }
+
+    private void PaginateNewlySelectedCategory()
+    {
+        if (!recordsPerPage.Equals("all"))
+        {
+            previousPlayersState = players;
+            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+            players = players.Take(int.Parse(recordsPerPage));
+        }
     }
 }
