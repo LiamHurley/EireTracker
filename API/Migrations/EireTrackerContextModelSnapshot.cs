@@ -22,6 +22,241 @@ namespace API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("API.Models.OverallStats", b =>
+                {
+                    b.Property<int>("OverallStatsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OverallStatsId"), 1L, 1);
+
+                    b.Property<double>("AccurateCross")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AccurateKeeperSweeper")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AccurateLongBalls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AccuratePass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AerialLost")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AerialWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("AverageRating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("BigChanceCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("BigChanceMissed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("BlockedScoringAttempt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Captain")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("CleanSheets")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("DuelLost")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("DuelWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("ErrorLeadToAShot")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Fouls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("GoalAssist")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Goals")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("InterceptionWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("KeyPass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<int>("MatchesPlayed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<double>("MinutesPlayed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("OnTargetScoringAttempt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("OutfielderBlock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PossessionLostCtrl")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Punches")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Rating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("SavedShotsFromInsideTheBox")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Saves")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("ShotOffTarget")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Substitute")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalAerialDuels")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalClearance")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalCross")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalDuels")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalKeeperSweeper")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalLongBalls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalOffside")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalPass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalShotsTaken")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("TotalTackle")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("Touches")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double>("WasFouled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.HasKey("OverallStatsId");
+
+                    b.HasIndex("PlayerId")
+                        .IsUnique()
+                        .HasFilter("[PlayerId] IS NOT NULL");
+
+                    b.ToTable("OverallStats");
+                });
+
             modelBuilder.Entity("API.Models.Performance", b =>
                 {
                     b.Property<int>("PerformanceId")
@@ -30,110 +265,201 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PerformanceId"), 1L, 1);
 
-                    b.Property<int?>("AccurateCross")
-                        .HasColumnType("int");
+                    b.Property<double?>("AccurateCross")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("AccurateKeeperSweeper")
-                        .HasColumnType("int");
+                    b.Property<double?>("AccurateKeeperSweeper")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("AccurateLongBalls")
-                        .HasColumnType("int");
+                    b.Property<double?>("AccurateLongBalls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("AccuratePass")
-                        .HasColumnType("int");
+                    b.Property<double?>("AccuratePass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("AerialLost")
-                        .HasColumnType("int");
+                    b.Property<double?>("AerialLost")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("AerialWon")
-                        .HasColumnType("int");
+                    b.Property<double?>("AerialWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("BigChanceCreated")
-                        .HasColumnType("int");
+                    b.Property<double?>("BigChanceCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("BigChanceMissed")
-                        .HasColumnType("int");
+                    b.Property<double?>("BigChanceMissed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("BlockedScoringAttempt")
-                        .HasColumnType("int");
+                    b.Property<double?>("BlockedScoringAttempt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("DuelLost")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Captain")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<int?>("DuelWon")
-                        .HasColumnType("int");
+                    b.Property<bool?>("CleanSheet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<int?>("ErrorLeadToAShot")
-                        .HasColumnType("int");
+                    b.Property<double?>("DuelLost")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("Fouls")
-                        .HasColumnType("int");
+                    b.Property<double?>("DuelWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("Goals")
-                        .HasColumnType("int");
+                    b.Property<double?>("ErrorLeadToAShot")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("InterceptionWon")
-                        .HasColumnType("int");
+                    b.Property<double?>("Fouls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("KeyPass")
-                        .HasColumnType("int");
+                    b.Property<double?>("GoalAssist")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("MinutesPlayed")
-                        .HasColumnType("int");
+                    b.Property<double?>("Goals")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("OnTargetScoringAttempt")
-                        .HasColumnType("int");
+                    b.Property<double?>("InterceptionWon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("OutfielderBlock")
-                        .HasColumnType("int");
+                    b.Property<double?>("KeyPass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<string>("MatchDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("MinutesPlayed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double?>("OnTargetScoringAttempt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double?>("OutfielderBlock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PossessionLostCtrl")
-                        .HasColumnType("int");
+                    b.Property<double?>("PossessionLostCtrl")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("Punches")
-                        .HasColumnType("int");
+                    b.Property<double?>("Punches")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
                     b.Property<double?>("Rating")
-                        .HasColumnType("float");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("SavedShotsFromInsideTheBox")
-                        .HasColumnType("int");
+                    b.Property<double?>("SavedShotsFromInsideTheBox")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("Saves")
-                        .HasColumnType("int");
+                    b.Property<double?>("Saves")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("ShotOffTarget")
-                        .HasColumnType("int");
+                    b.Property<double?>("ShotOffTarget")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalClearance")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Substitute")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<int?>("TotalCross")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalClearance")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalKeeperSweeper")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalCross")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalLongBalls")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalKeeperSweeper")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalOffside")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalLongBalls")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalPass")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalOffside")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("TotalTackle")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalPass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("Touches")
-                        .HasColumnType("int");
+                    b.Property<double?>("TotalTackle")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int?>("WasFouled")
-                        .HasColumnType("int");
+                    b.Property<double?>("Touches")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<double?>("WasFouled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
                     b.HasKey("PerformanceId");
 
@@ -162,131 +488,22 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PlayerId");
 
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("API.Models.StatsProfile", b =>
+            modelBuilder.Entity("API.Models.OverallStats", b =>
                 {
-                    b.Property<int>("StatsProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("API.Models.Player", "Player")
+                        .WithOne("OverallStats")
+                        .HasForeignKey("API.Models.OverallStats", "PlayerId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatsProfileId"), 1L, 1);
-
-                    b.Property<int?>("AccurateCross")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccurateKeeperSweeper")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccurateLongBalls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccuratePass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AerialLost")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AerialWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BigChanceCreated")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BigChanceMissed")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BlockedScoringAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DuelLost")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DuelWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ErrorLeadToAShot")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Fouls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Goals")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InterceptionWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KeyPass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MinutesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OnTargetScoringAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OutfielderBlock")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PossessionLostCtrl")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Punches")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("SavedShotsFromInsideTheBox")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Saves")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ShotOffTarget")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalClearance")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalCross")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalKeeperSweeper")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalLongBalls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalOffside")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalPass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalTackle")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Touches")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WasFouled")
-                        .HasColumnType("int");
-
-                    b.HasKey("StatsProfileId");
-
-                    b.HasIndex("PlayerId")
-                        .IsUnique()
-                        .HasFilter("[PlayerId] IS NOT NULL");
-
-                    b.ToTable("StatsProfiles");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("API.Models.Performance", b =>
@@ -298,18 +515,10 @@ namespace API.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("API.Models.StatsProfile", b =>
-                {
-                    b.HasOne("API.Models.Player", "Player")
-                        .WithOne("OverallStats")
-                        .HasForeignKey("API.Models.StatsProfile", "PlayerId");
-
-                    b.Navigation("Player");
-                });
-
             modelBuilder.Entity("API.Models.Player", b =>
                 {
-                    b.Navigation("OverallStats");
+                    b.Navigation("OverallStats")
+                        .IsRequired();
 
                     b.Navigation("Performances");
                 });
