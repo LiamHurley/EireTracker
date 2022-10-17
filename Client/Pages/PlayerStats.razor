@@ -453,6 +453,9 @@ else
             case StatCategory.Passing:
                 SortPassingStatDescending(stat);
                 break;
+            case StatCategory.Misc:
+                SortMiscStatDescending(stat);
+                break;
         }
     }
 
@@ -474,6 +477,9 @@ else
                 break;
             case StatCategory.Passing:
                 SortPassingStatAscending(stat);
+                break;
+            case StatCategory.Misc:
+                SortMiscStatAscending(stat);
                 break;
         }
     }
@@ -552,6 +558,37 @@ else
                 break;
             case "Long Ball Completion (%)":
                 players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+        }
+    }
+
+    private void SortMiscStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Touches":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Touches);
+                break;
+            case "Offsides":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalOffside);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Captain":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Captain);
+                break;
+            case "Fouls":
+                players = players.OrderByDescending(p => p.OverallStatsDto.Fouls);
+                break;
+            case "Fouls Won":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.WasFouled);
                 break;
         }
     }
@@ -686,6 +723,37 @@ else
                 break;
             case "Long Ball Completion (%)":
                 players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
+                break;
+        }
+    }
+
+    private void SortMiscStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Touches":
+                players = players.OrderBy(p => p.OverallStatsDto.Touches);
+                break;
+            case "Offsides":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalOffside);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Captain":
+                players = players.OrderBy(p => p.OverallStatsDto.Captain);
+                break;
+            case "Fouls":
+                players = players.OrderBy(p => p.OverallStatsDto.Fouls);
+                break;
+            case "Fouls Won":
+                players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.WasFouled);
                 break;
         }
     }
