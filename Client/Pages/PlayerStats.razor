@@ -270,7 +270,6 @@ else
     private void SortStat(string header)
     {
         //prioritise for refactor
-
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
 
         if (!recordsPerPage.Equals("all"))
@@ -327,7 +326,7 @@ else
                 return;
 
             recordsPerPage = e.Value.ToString();
-            
+
             switch (positionSelected)
             {
                 case "Goalkeepers":
@@ -451,6 +450,9 @@ else
             case StatCategory.Goalkeeping:
                 SortGoalkeepingStatDescending(stat);
                 break;
+            case StatCategory.Passing:
+                SortPassingStatDescending(stat);
+                break;
         }
     }
 
@@ -469,6 +471,9 @@ else
                 break;
             case StatCategory.Goalkeeping:
                 SortGoalkeepingStatAscending(stat);
+                break;
+            case StatCategory.Passing:
+                SortPassingStatAscending(stat);
                 break;
         }
     }
@@ -516,6 +521,37 @@ else
                 break;
             case "Average Rating":
                 players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortPassingStatDescending(string stat)
+    {
+        switch(stat)
+        {
+            case "Passes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.TotalPass);
+                break;
+            case "Assists":
+                players = players.OrderByDescending(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Key Passes":
+                players = players.OrderByDescending(p => p.OverallStatsDto.KeyPass);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderByDescending(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
                 break;
         }
     }
@@ -619,6 +655,37 @@ else
                 break;
             case "Average Rating":
                 players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+        }
+    }
+
+    private void SortPassingStatAscending(string stat)
+    {
+        switch(stat)
+        {
+            case "Passes":
+                players = players.OrderBy(p => p.OverallStatsDto.TotalPass);
+                break;
+            case "Assists":
+                players = players.OrderBy(p => p.OverallStatsDto.GoalAssist);
+                break;
+            case "Appearances":
+                players = players.OrderBy(p => p.OverallStatsDto.MatchesPlayed);
+                break;
+            case "Minutes":
+                players = players.OrderBy(p => p.OverallStatsDto.MinutesPlayed);
+                break;
+            case "Average Rating":
+                players = players.OrderBy(p => p.OverallStatsDto.AverageRating);
+                break;
+            case "Key Passes":
+                players = players.OrderBy(p => p.OverallStatsDto.KeyPass);
+                break;
+            case "Pass Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccuratePass / p.OverallStatsDto.TotalPass);
+                break;
+            case "Long Ball Completion (%)":
+                players = players.OrderBy(p => p.OverallStatsDto.AccurateLongBalls / p.OverallStatsDto.TotalLongBalls);
                 break;
         }
     }
