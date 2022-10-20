@@ -18,7 +18,7 @@
 else
 {
     //make sure filtered stats persist when changing category TODO
-    //investigate why passing and misc stats aren't sorting
+    //investigate why captain stat not incrementing
     
     //get some divs involved
     //add logic to grey out goalkeeping stats if not viewing goalkeepers
@@ -821,7 +821,7 @@ else
 
         isPerNinety = false;
 
-        foreach (var player in players)
+        foreach (var player in allPlayers)
         {
             player.ConvertStatsToTotal();
         }
@@ -834,7 +834,7 @@ else
 
         isPerNinety = true;
 
-        foreach (var player in players)
+        foreach (var player in allPlayers)
         {
             player.ConvertStatsToPerNinety();
         }
