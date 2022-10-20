@@ -33,6 +33,14 @@ namespace API.Controllers
             return BadRequest(new ProblemDetails { Title = "Problem saving player" });
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        {
+            var players = await _context.Players.ToListAsync();
+
+            return Ok(players);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayersWithPerformancesAndOverallStats()
         {
@@ -65,11 +73,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(int id)
         {
-            var players = await _context.Players.Include("Performances")
-                .Include("OverallStats")
-                .ToListAsync();
-
-            var player = players.Find(x => x.PlayerId == id);
+            var player = await _context.Players.Include("Performances")
+                                         .Include("OverallStats")
+                                         .Where(x => x.PlayerId == id)
+                                         .SingleOrDefaultAsync();
 
             return Ok(player);
         }
