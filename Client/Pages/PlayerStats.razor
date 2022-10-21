@@ -351,8 +351,12 @@ else
                     break;
             }
 
+            UpdateSelectedStatsCategory(statsCategorySelected);
+            SortStatDescending(statBeingSortedBy);
+            
             previousPlayersState = players;
 
+            //this is extremely similar to PaginateNewlySelectedCategory. Refactor this.
             if (!e.Value.ToString().Equals("All"))
             {
                 numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
@@ -374,46 +378,32 @@ else
                 case "Goalkeepers":
                     positionSelected = category;
                     DisplayGoalkeepers();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
                 case "All":
                     positionSelected = category;
                     DisplayAllPlayers();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
                 case "Outfielders":
                     positionSelected = category;
                     DisplayOutfielders();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
                 case "Defenders":
                     positionSelected = category;
                     DisplayDefenders();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
                 case "Midfielders":
                     positionSelected = category;
                     DisplayMidfielders();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
                 case "Forwards":
                     positionSelected = category;
                     DisplayForwards();
-                    UpdateSelectedStatsCategory(statsCategorySelected);
-                    SortStatDescending(statBeingSortedBy);
-                    PaginateNewlySelectedCategory();
                     break;
             }
+
+            UpdateSelectedStatsCategory(statsCategorySelected);
+            SortStatDescending(statBeingSortedBy);
+            PaginateNewlySelectedCategory();
         }
     }
 
@@ -885,7 +875,6 @@ else
 
     private void DisplayForwards() => players = outfieldPlayers.Where(p => p.Position == "F");
     
-
     private void DisplayGoalkeepers()
     {
         players = goalkeeperPlayers;
@@ -894,7 +883,6 @@ else
 
     private void DisplayAllPlayers() => players = allPlayers;
     
-
     private void DisplayDefensiveStats()
     {
         players = outfieldPlayers;
