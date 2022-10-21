@@ -17,7 +17,6 @@
 }
 else
 {
-    //investigate persisting the stat currently being sorted by when switching category
     //investigate why captain stat not incrementing
     
     //get some divs involved
@@ -245,13 +244,13 @@ else
     private IEnumerable<PlayerDto>? goalkeeperPlayers;
     private IEnumerable<PlayerDto>? previousPlayersState;
 
-    private string positionSelected = "";
+    private string positionSelected = "All";
     private string statsCategorySelected = "";
     private string statBeingSortedBy = "";
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
-    private string recordsPerPage = "all";
+    private string recordsPerPage = "All";
     private int numberOfPages = 1;
     private int position = 0;
 
@@ -275,7 +274,7 @@ else
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
         statBeingSortedBy = header;
 
-        if (!recordsPerPage.Equals("all"))
+        if (!recordsPerPage.Equals("All"))
         {
             if (!SortStatuses[indexOfStat].Equals(StatSortedStatus.Descending.ToString()))
             {
@@ -316,6 +315,9 @@ else
 
     private void NextPage(int pageNumber)
     {
+        if (numberOfPages == 1 && pageNumber == 1)
+            return;
+
         players = previousPlayersState
                     .Skip((pageNumber - 1) * int.Parse(recordsPerPage))
                     .Take(int.Parse(recordsPerPage));
@@ -325,9 +327,6 @@ else
     {
         if (!string.IsNullOrEmpty(e.Value.ToString()))
         {
-            if (e.Value.ToString() == "All")
-                return;
-
             recordsPerPage = e.Value.ToString();
 
             switch (positionSelected)
@@ -353,8 +352,14 @@ else
             }
 
             previousPlayersState = players;
-            numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
-            players = players.Take(int.Parse(recordsPerPage));
+
+            if (!e.Value.ToString().Equals("All"))
+            {
+                numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
+                players = players.Take(int.Parse(recordsPerPage));
+            }
+            else
+                numberOfPages = 1;
         }    
     }
 
@@ -866,29 +871,20 @@ else
         }
     }
 
-    private void DisplayOutfielders()
-    {
-        players = outfieldPlayers;
-        statsToDisplay = StatCategory.General;
-    }
-
+    private void DisplayOutfielders() => players = outfieldPlayers;
+    
     private void DisplayDefenders()
     {
         players = outfieldPlayers.Where(p => p.Position == "D");
-        statsToDisplay = StatCategory.General;
     }
 
     private void DisplayMidfielders()
     {
         players = outfieldPlayers.Where(p => p.Position == "M");
-        statsToDisplay = StatCategory.General;
     }
 
-    private void DisplayForwards()
-    {
-        players = outfieldPlayers.Where(p => p.Position == "F");
-        statsToDisplay = StatCategory.General;
-    }
+    private void DisplayForwards() => players = outfieldPlayers.Where(p => p.Position == "F");
+    
 
     private void DisplayGoalkeepers()
     {
@@ -896,11 +892,8 @@ else
         statsToDisplay = StatCategory.Goalkeeping;
     }
 
-    private void DisplayAllPlayers()
-    {
-        players = allPlayers;
-        statsToDisplay = StatCategory.Attacking;
-    }
+    private void DisplayAllPlayers() => players = allPlayers;
+    
 
     private void DisplayDefensiveStats()
     {
@@ -914,10 +907,7 @@ else
         statsToDisplay = StatCategory.Attacking;
     }
 
-    private void DisplayGeneralStats()
-    {
-        statsToDisplay = StatCategory.General;
-    }
+    private void DisplayGeneralStats() => statsToDisplay = StatCategory.General;
 
     private void PopulateTableHeadersArray()
     {
@@ -937,7 +927,7 @@ else
 
     private void PaginateNewlySelectedCategory()
     {
-        if (!recordsPerPage.Equals("all"))
+        if (!recordsPerPage.Equals("All"))
         {
             previousPlayersState = players;
             numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
