@@ -17,7 +17,7 @@
 }
 else
 {
-    //make sure filtered stats persist when changing category TODO
+    //investigate persisting the stat currently being sorted by when switching category
     //investigate why captain stat not incrementing
     
     //get some divs involved
@@ -246,6 +246,7 @@ else
     private IEnumerable<PlayerDto>? previousPlayersState;
 
     private string positionSelected = "";
+    private string statsCategorySelected = "";
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
@@ -364,31 +365,37 @@ else
                 case "Goalkeepers":
                     positionSelected = "Goalkeepers";
                     DisplayGoalkeepers();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
                 case "All":
                     positionSelected = "All";
                     DisplayAllPlayers();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Outfielders":
                     positionSelected = "Outfielders";
                     DisplayOutfielders();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Defenders":
                     positionSelected = "Defenders";
                     DisplayDefenders();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Midfielders":
                     positionSelected = "Midfielders";
                     DisplayMidfielders();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Forwards":
                     positionSelected = "Forwards";
                     DisplayForwards();
+                    UpdateSelectedStatsCategory(statsCategorySelected);
                     PaginateNewlySelectedCategory();
                     break;
             }
@@ -397,29 +404,38 @@ else
 
     private void SelectedStatsCategoryChanged(ChangeEventArgs e)
     {
-        if(e.Value != null)
+        if (e.Value != null)
+            UpdateSelectedStatsCategory(e.Value.ToString());
+    }
+
+    private void UpdateSelectedStatsCategory(string category)
+    {
+        switch (category)
         {
-            switch (e.Value.ToString())
-            {
-                case "GoalkeepingStats":
-                    statsToDisplay = StatCategory.Goalkeeping;
-                    break;
-                case "DefendingStats":
-                    statsToDisplay = StatCategory.Defending;
-                    break;
-                case "ShootingStats":
-                    statsToDisplay = StatCategory.Attacking;
-                    break;
-                case "PassingStats":
-                    statsToDisplay = StatCategory.Passing;
-                    break;
-                case "GeneralStats":
-                    statsToDisplay = StatCategory.General;
-                    break;
-                case "MiscStats":
-                    statsToDisplay = StatCategory.Misc;
-                    break;
-            }
+            case "GoalkeepingStats":
+                statsToDisplay = StatCategory.Goalkeeping;
+                statsCategorySelected = category;
+                break;
+            case "DefendingStats":
+                statsToDisplay = StatCategory.Defending;
+                statsCategorySelected = category;
+                break;
+            case "ShootingStats":
+                statsToDisplay = StatCategory.Attacking;
+                statsCategorySelected = category;
+                break;
+            case "PassingStats":
+                statsToDisplay = StatCategory.Passing;
+                statsCategorySelected = category;
+                break;
+            case "GeneralStats":
+                statsToDisplay = StatCategory.General;
+                statsCategorySelected = category;
+                break;
+            case "MiscStats":
+                statsToDisplay = StatCategory.Misc;
+                statsCategorySelected = category;
+                break;
         }
     }
 
