@@ -41,7 +41,7 @@ else
 
     <label for="stat-selector">Filter Stats: </label>
     <select id="stat-selector" @onchange="SelectedStatsCategoryChanged">
-        <option value="GeneralStats">General</option>?
+        <option value="GeneralStats">General</option>
         <option value="GoalkeepingStats">Goalkeeping</option>
         <option value="DefendingStats">Defending</option>
         <option value="ShootingStats">Shooting</option>
@@ -55,7 +55,7 @@ else
 
     <label for="records-selector">Records Per Page: </label>
     <select id="records-selector" @onchange="SelectedRecordsPerPageChanged">
-        <option value="All">All</option>?
+        <option value="All">All</option>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
@@ -247,6 +247,7 @@ else
 
     private string positionSelected = "";
     private string statsCategorySelected = "";
+    private string statBeingSortedBy = "";
 
     private bool isPerNinety;
     private StatCategory statsToDisplay = StatCategory.General;
@@ -272,6 +273,7 @@ else
     {
         //prioritise for refactor
         int indexOfStat = TableHeaders.ToList().IndexOf(header);
+        statBeingSortedBy = header;
 
         if (!recordsPerPage.Equals("all"))
         {
@@ -360,42 +362,50 @@ else
     {
         if(e.Value != null)
         {
-            switch (e.Value.ToString())
+            string category = e.Value.ToString();
+
+            switch (category)
             {
                 case "Goalkeepers":
-                    positionSelected = "Goalkeepers";
+                    positionSelected = category;
                     DisplayGoalkeepers();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
                 case "All":
-                    positionSelected = "All";
+                    positionSelected = category;
                     DisplayAllPlayers();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Outfielders":
-                    positionSelected = "Outfielders";
+                    positionSelected = category;
                     DisplayOutfielders();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Defenders":
-                    positionSelected = "Defenders";
+                    positionSelected = category;
                     DisplayDefenders();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Midfielders":
-                    positionSelected = "Midfielders";
+                    positionSelected = category;
                     DisplayMidfielders();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
                 case "Forwards":
-                    positionSelected = "Forwards";
+                    positionSelected = category;
                     DisplayForwards();
                     UpdateSelectedStatsCategory(statsCategorySelected);
+                    SortStatDescending(statBeingSortedBy);
                     PaginateNewlySelectedCategory();
                     break;
             }
