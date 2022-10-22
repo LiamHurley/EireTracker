@@ -60,7 +60,7 @@
             OverallStats.Touches += UpdateDoubleStat(performance.Touches);
             OverallStats.WasFouled += UpdateDoubleStat(performance.WasFouled);
 
-            if (performance.Captain != null)
+            if (performance.Captain == true)
                 OverallStats.Captain++;
 
             if(performance.Substitute != null && performance.Substitute == true)

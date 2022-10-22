@@ -362,31 +362,26 @@ else
         if(e.Value != null)
         {
             string category = e.Value.ToString();
+            positionSelected = category;
 
             switch (category)
             {
                 case "Goalkeepers":
-                    positionSelected = category;
                     DisplayGoalkeepers();
                     break;
                 case "All":
-                    positionSelected = category;
                     DisplayAllPlayers();
                     break;
                 case "Outfielders":
-                    positionSelected = category;
                     DisplayOutfielders();
                     break;
                 case "Defenders":
-                    positionSelected = category;
                     DisplayDefenders();
                     break;
                 case "Midfielders":
-                    positionSelected = category;
                     DisplayMidfielders();
                     break;
                 case "Forwards":
-                    positionSelected = category;
                     DisplayForwards();
                     break;
             }
