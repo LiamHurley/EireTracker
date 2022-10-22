@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace API.Models
+namespace Client.Shared
 {
     public class Performance
     {
@@ -64,10 +64,5 @@ namespace API.Models
         public int? PlayerId { get; set; }
         [JsonIgnore]
         public Player? Player { get; set; }
-
-        public DateTime ConvertMatchDateToDateTime(string date)
-        {
-            return new DateTime(int.Parse(date.Substring(0, 4)), int.Parse(date.Substring(5, 2)), int.Parse(date.Substring(8, 1)));
-        }
     }
 }

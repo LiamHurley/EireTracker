@@ -1,4 +1,4 @@
-﻿namespace API.Models
+﻿namespace Client.Shared
 {
     public class Player
     {
@@ -68,7 +68,5 @@
         }
 
         private double UpdateDoubleStat(double? performanceValue) => (double)(performanceValue != null ? performanceValue : 0);
-
-        public void SortPerformancesByDate() => Performances.OrderBy(p => p.ConvertMatchDateToDateTime(p.MatchDate));      
     }
 }

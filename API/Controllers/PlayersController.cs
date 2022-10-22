@@ -78,6 +78,9 @@ namespace API.Controllers
                                          .Where(x => x.PlayerId == id)
                                          .SingleOrDefaultAsync();
 
+            if(player != null) 
+                player.SortPerformancesByDate();
+
             return Ok(player);
         }
 

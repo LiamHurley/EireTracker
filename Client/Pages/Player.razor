@@ -1,0 +1,59 @@
+﻿@page "/player/{PlayerId}"
+@using Client.Models
+@using System.Data
+@using Client.DTOs
+@using Client.Enums
+@using Client.Shared
+@inject HttpClient Http
+
+<h3>Player</h3>
+
+<!-- handle invalid playerid --> 
+
+@if(player == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>@player.Name</p>
+   
+    <table>
+        <thead>
+            <tr>
+                <th>Performances</th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>G</th>
+                <th>A</th>
+                <th>Mins</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var p in player.Performances)
+            {
+                <tr>
+                    <td>@p.MatchDate</td>
+                    <td>@p.Goals</td>
+                    <td>@p.GoalAssist</td>
+                    <td>@p.MinutesPlayed</td>
+                    <td>@p.Rating</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string PlayerId { get; set; }
+    
+    PlayerProfileViewModel player;
+
+    protected override async Task OnInitializedAsync()
+    {
+        player = await Http.GetFromJsonAsync<PlayerProfileViewModel>("http://localhost:5247/api/Players/" + PlayerId);
+    }
+}

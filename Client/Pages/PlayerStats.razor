@@ -76,7 +76,7 @@ else
                 @foreach (var player in players)
                 {
                     <tr>
-                        <td>@player.Name</td>
+                        <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                         <td>@player.Club</td>
                         <td>@player.DateOfBirth</td>
                         <td>@player.OverallStatsDto.MatchesPlayed</td>
@@ -103,7 +103,7 @@ else
                 @foreach (var player in players)
                 {
                     <tr>
-                        <td>@player.Name</td>
+                        <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                         <td>@player.Club</td>
                         <td>@player.OverallStatsDto.MinutesPlayed</td>
                         <td>@player.OverallStatsDto.Goals</td>
@@ -130,7 +130,7 @@ else
                     @foreach(var player in players)
                     {
                         <tr>
-                            <td>@player.Name</td>
+                            <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.CleanSheets</td>
@@ -158,7 +158,7 @@ else
                     @foreach(var player in players)
                     {
                         <tr>
-                            <td>@player.Name</td>
+                            <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.MinutesPlayed</td>
@@ -186,7 +186,7 @@ else
                     @foreach(var player in players)
                     {
                         <tr>
-                            <td>@player.Name</td>
+                            <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.MinutesPlayed</td>
@@ -214,7 +214,7 @@ else
                     @foreach(var player in players)
                     {
                         <tr>
-                            <td>@player.Name</td>
+                            <td><a href="/player/@player.PlayerId">@player.Name</a></td>
                             <td>@player.Club</td>
                             <td>@player.OverallStatsDto.MatchesPlayed</td>
                             <td>@player.OverallStatsDto.MinutesPlayed</td>
