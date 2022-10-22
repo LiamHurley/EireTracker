@@ -66,6 +66,7 @@
             if(performance.Substitute != null && performance.Substitute == true)
                 OverallStats.Substitute++;
         }
+
         private double UpdateDoubleStat(double? performanceValue) => (double)(performanceValue != null ? performanceValue : 0);
     }
 }

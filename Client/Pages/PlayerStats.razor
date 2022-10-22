@@ -328,29 +328,7 @@ else
         if (!string.IsNullOrEmpty(e.Value.ToString()))
         {
             recordsPerPage = e.Value.ToString();
-
-            switch (positionSelected)
-            {
-                case "Goalkeepers":
-                    DisplayGoalkeepers();
-                    break;
-                case "All":
-                    DisplayAllPlayers();
-                    break;
-                case "Outfielders":
-                    DisplayOutfielders();
-                    break;
-                case "Defenders":
-                    DisplayDefenders();
-                    break;
-                case "Midfielders":
-                    DisplayMidfielders();
-                    break;
-                case "Forwards":
-                    DisplayForwards();
-                    break;
-            }
-
+            DisplayPlayerCategory(positionSelected);
             UpdateSelectedStatsCategory(statsCategorySelected);
             SortStatDescending(statBeingSortedBy);
             PaginateNewlySelectedCategory();
@@ -363,29 +341,7 @@ else
         {
             string category = e.Value.ToString();
             positionSelected = category;
-
-            switch (category)
-            {
-                case "Goalkeepers":
-                    DisplayGoalkeepers();
-                    break;
-                case "All":
-                    DisplayAllPlayers();
-                    break;
-                case "Outfielders":
-                    DisplayOutfielders();
-                    break;
-                case "Defenders":
-                    DisplayDefenders();
-                    break;
-                case "Midfielders":
-                    DisplayMidfielders();
-                    break;
-                case "Forwards":
-                    DisplayForwards();
-                    break;
-            }
-
+            DisplayPlayerCategory(category);
             UpdateSelectedStatsCategory(statsCategorySelected);
             SortStatDescending(statBeingSortedBy);
             PaginateNewlySelectedCategory();
@@ -843,6 +799,31 @@ else
         foreach (var player in allPlayers)
         {
             player.ConvertStatsToPerNinety();
+        }
+    }
+
+    private void DisplayPlayerCategory(string category)
+    {
+        switch (category)
+        {
+            case "Goalkeepers":
+                DisplayGoalkeepers();
+                break;
+            case "All":
+                DisplayAllPlayers();
+                break;
+            case "Outfielders":
+                DisplayOutfielders();
+                break;
+            case "Defenders":
+                DisplayDefenders();
+                break;
+            case "Midfielders":
+                DisplayMidfielders();
+                break;
+            case "Forwards":
+                DisplayForwards();
+                break;
         }
     }
 
