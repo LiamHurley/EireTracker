@@ -353,17 +353,7 @@ else
 
             UpdateSelectedStatsCategory(statsCategorySelected);
             SortStatDescending(statBeingSortedBy);
-            
-            previousPlayersState = players;
-
-            //this is extremely similar to PaginateNewlySelectedCategory. Refactor this.
-            if (!e.Value.ToString().Equals("All"))
-            {
-                numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
-                players = players.Take(int.Parse(recordsPerPage));
-            }
-            else
-                numberOfPages = 1;
+            PaginateNewlySelectedCategory();
         }    
     }
 
@@ -862,7 +852,7 @@ else
     }
 
     private void DisplayOutfielders() => players = outfieldPlayers;
-    
+
     private void DisplayDefenders()
     {
         players = outfieldPlayers.Where(p => p.Position == "D");
@@ -874,7 +864,7 @@ else
     }
 
     private void DisplayForwards() => players = outfieldPlayers.Where(p => p.Position == "F");
-    
+
     private void DisplayGoalkeepers()
     {
         players = goalkeeperPlayers;
@@ -882,7 +872,7 @@ else
     }
 
     private void DisplayAllPlayers() => players = allPlayers;
-    
+
     private void DisplayDefensiveStats()
     {
         players = outfieldPlayers;
@@ -915,11 +905,14 @@ else
 
     private void PaginateNewlySelectedCategory()
     {
+        previousPlayersState = players;
+
         if (!recordsPerPage.Equals("All"))
         {
-            previousPlayersState = players;
             numberOfPages = (int)Math.Ceiling(Convert.ToDouble(players.Count()) / Convert.ToDouble(int.Parse(recordsPerPage)));
             players = players.Take(int.Parse(recordsPerPage));
         }
+        else
+            numberOfPages = 1;
     }
 }
