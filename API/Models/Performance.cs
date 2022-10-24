@@ -61,6 +61,16 @@ namespace API.Models
         public double? TotalOffside { get; set; }
         #endregion
 
+        #region Match Info
+
+        public string? HomeTeam { get; set; }
+        public string? AwayTeam { get; set; }
+        public int HomeScore { get; set; }
+        public int AwayScore { get; set; }
+        public char? HomeAway { get; set; } 
+
+        #endregion
+
         public int? PlayerId { get; set; }
         [JsonIgnore]
         public Player? Player { get; set; }

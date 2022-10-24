@@ -295,6 +295,12 @@ namespace API.Migrations
                         .HasColumnType("float")
                         .HasDefaultValue(0.0);
 
+                    b.Property<int>("AwayScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AwayTeam")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double?>("BigChanceCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("float")
@@ -349,6 +355,15 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("float")
                         .HasDefaultValue(0.0);
+
+                    b.Property<string>("HomeAway")
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<int>("HomeScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HomeTeam")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("InterceptionWon")
                         .ValueGeneratedOnAdd()
