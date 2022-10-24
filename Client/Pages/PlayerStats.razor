@@ -829,16 +829,10 @@ else
 
     private void DisplayOutfielders() => players = outfieldPlayers;
 
-    private void DisplayDefenders()
-    {
-        players = outfieldPlayers.Where(p => p.Position == "D");
-    }
+    private void DisplayDefenders() => players = outfieldPlayers.Where(p => p.Position == "D");
 
-    private void DisplayMidfielders()
-    {
-        players = outfieldPlayers.Where(p => p.Position == "M");
-    }
-
+    private void DisplayMidfielders() => players = outfieldPlayers.Where(p => p.Position == "M");
+    
     private void DisplayForwards() => players = outfieldPlayers.Where(p => p.Position == "F");
 
     private void DisplayGoalkeepers()

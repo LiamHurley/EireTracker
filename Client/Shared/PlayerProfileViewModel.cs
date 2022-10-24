@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Client.Shared
 {
@@ -9,6 +8,14 @@ namespace Client.Shared
 
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string DateOfBirth { get; set; }
+        [Required] 
+        public string Club { get; set; }
+        [Required] 
+        public string Position { get; set; }
+        [Required] 
+        public OverallStats OverallStats { get; set; }
         [Required]
         public List<Performance> Performances { get; set; }
     }
