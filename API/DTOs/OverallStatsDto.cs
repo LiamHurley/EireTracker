@@ -17,11 +17,13 @@
         public double ErrorLeadToAShot { get; set; }
         public double TotalClearance { get; set; }
         public double TotalAerialDuels { get; set; }
+        public double AerialDuelsWonPercentage { get; set; }
         public double AerialLost { get; set; }
         public double AerialWon { get; set; }
         public double TotalDuels { get; set; }
         public double DuelLost { get; set; }
         public double DuelWon { get; set; }
+        public double DuelWonPercentage { get; set; }
         public double InterceptionWon { get; set; }
         public double TotalTackle { get; set; }
         public double OutfielderBlock { get; set; }
@@ -31,8 +33,10 @@
         public double TotalPass { get; set; }
         public double GoalAssist { get; set; }
         public double AccuratePass { get; set; }
+        public double PassAccuracy { get; set; }
         public double TotalLongBalls { get; set; }
         public double AccurateLongBalls { get; set; }
+        public double LongBallAccuracy { get; set; }
         public double TotalCross { get; set; }
         public double AccurateCross { get; set; }
         public double BigChanceCreated { get; set; }

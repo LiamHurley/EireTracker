@@ -1,6 +1,6 @@
 ﻿namespace API.DTOs
 {
-    public class PlayerDto
+    public class PlayerWithOverallStatsDto
     {
         public int PlayerId { get; set; }
         public string Name { get; set; }

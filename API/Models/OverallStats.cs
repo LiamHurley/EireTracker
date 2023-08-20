@@ -98,7 +98,7 @@ namespace API.Models
                 PossessionLostCtrl = this.PossessionLostCtrl,
                 Punches = this.Punches,
                 Rating = this.Rating,
-                AverageRating = this.AverageRating,
+                AverageRating = Math.Round(this.Rating / this.MatchesPlayed, 2, MidpointRounding.AwayFromZero),
                 SavedShotsFromInsideTheBox = this.SavedShotsFromInsideTheBox,
                 ShotOffTarget = this.ShotOffTarget,
                 Saves = this.Saves,
@@ -114,8 +114,21 @@ namespace API.Models
                 TotalPass = this.TotalPass,
                 TotalTackle = this.TotalTackle,
                 Touches = this.Touches,
-                WasFouled = this.WasFouled
+                WasFouled = this.WasFouled,
+                PassAccuracy = sortMe(this.AccuratePass, this.TotalPass),
+                DuelWonPercentage = sortMe(this.DuelWon, this.TotalDuels),
+                AerialDuelsWonPercentage = sortMe(this.AerialWon, this.TotalAerialDuels),
+                LongBallAccuracy = sortMe(this.AccurateLongBalls, this.TotalLongBalls)
             };
+        }
+
+        private double sortMe(double a, double b)
+        {
+            if(b == 0)
+            {
+                return 0;
+            }
+            return Math.Round((a / b) * 100, 2, MidpointRounding.AwayFromZero);
         }
     }
 }

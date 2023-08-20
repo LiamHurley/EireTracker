@@ -41,7 +41,7 @@ namespace API.Controllers
             return Ok(players);
         }
 
-        [HttpGet]
+       /* [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayersWithPerformancesAndOverallStats()
         {
             var players = await _context.Players.Include("Performances")
@@ -49,12 +49,12 @@ namespace API.Controllers
                 .ToListAsync();
 
             return Ok(players);
-        }
+        } */
 
         [HttpGet("overall")]
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllPlayersWithOverallStatsAndOverZeroMinutesPlayed()
+        public async Task<ActionResult<IEnumerable<PlayerWithOverallStatsDto>>> GetAllPlayersWithOverallStatsAndOverZeroMinutesPlayed()
         {
-            var players = await _context.Players.Select(x => new PlayerDto
+            var players = await _context.Players.Select(x => new PlayerWithOverallStatsDto
             {
                 PlayerId = x.PlayerId,
                 Name = x.Name,
@@ -73,13 +73,25 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(int id)
         {
-            var player = await _context.Players.Include("Performances")
-                                         .Include("OverallStats")
-                                         .Where(x => x.PlayerId == id)
-                                         .SingleOrDefaultAsync();
+            //var player = await _context.Players.Include("Performances")
+            //                             .Include("OverallStats")
+            //                             .Where(x => x.PlayerId == id)
+            //                             .SingleOrDefaultAsync();
 
-            if(player != null) 
-                player.SortPerformancesByDate();
+            var player = await _context.Players.Select(x => new PlayerDetailDto
+            {
+                PlayerId = x.PlayerId,
+                Name = x.Name,
+                Club = x.Club,
+                Position = x.Position,
+                DateOfBirth = x.DateOfBirth,
+                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto(),
+                Performances = x.Performances
+            }).Where(x => x.PlayerId == id)
+              .SingleOrDefaultAsync();
+
+            //if (player != null) 
+            //    player.SortPerformancesByDate();
 
             return Ok(player);
         }
