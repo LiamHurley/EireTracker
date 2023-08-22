@@ -115,20 +115,16 @@ namespace API.Models
                 TotalTackle = this.TotalTackle,
                 Touches = this.Touches,
                 WasFouled = this.WasFouled,
-                PassAccuracy = sortMe(this.AccuratePass, this.TotalPass),
-                DuelWonPercentage = sortMe(this.DuelWon, this.TotalDuels),
-                AerialDuelsWonPercentage = sortMe(this.AerialWon, this.TotalAerialDuels),
-                LongBallAccuracy = sortMe(this.AccurateLongBalls, this.TotalLongBalls)
+                PassAccuracy = calculateStatPercentage(this.AccuratePass, this.TotalPass),
+                DuelWonPercentage = calculateStatPercentage(this.DuelWon, this.TotalDuels),
+                AerialDuelsWonPercentage = calculateStatPercentage(this.AerialWon, this.TotalAerialDuels),
+                LongBallAccuracy = calculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls)
             };
         }
 
-        private double sortMe(double a, double b)
+        private double calculateStatPercentage(double statToDivide, double statToDivideBy)
         {
-            if(b == 0)
-            {
-                return 0;
-            }
-            return Math.Round((a / b) * 100, 2, MidpointRounding.AwayFromZero);
+            return statToDivideBy == 0 ? 0 : Math.Round((statToDivide / statToDivideBy) * 100, 2, MidpointRounding.AwayFromZero);
         }
     }
 }
