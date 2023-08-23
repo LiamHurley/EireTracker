@@ -98,7 +98,7 @@ namespace API.Models
                 PossessionLostCtrl = this.PossessionLostCtrl,
                 Punches = this.Punches,
                 Rating = this.Rating,
-                AverageRating = Math.Round(this.Rating / this.MatchesPlayed, 2, MidpointRounding.AwayFromZero),
+                AverageRating = this.MatchesPlayed == 0 ? 0 : Math.Round(this.Rating / this.MatchesPlayed, 2, MidpointRounding.AwayFromZero),
                 SavedShotsFromInsideTheBox = this.SavedShotsFromInsideTheBox,
                 ShotOffTarget = this.ShotOffTarget,
                 Saves = this.Saves,

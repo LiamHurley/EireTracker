@@ -11,23 +11,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<EireTrackerContext>(o =>
 {
-    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    o.UseSqlServer(builder.Configuration.GetConnectionString("Docker"));
 });
 
 var app = builder.Build();
 
-//using var scope = app.Services.CreateScope();
-//var context = scope.ServiceProvider.GetRequiredService<EireTrackerContext>();
-//var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-//try
-//{
-//    context.Database.Migrate();
-//    //Seed.SeedData(context);
-//}
-//catch (Exception ex)
-//{
-//    logger.LogError(ex, "Problem migrating data");
-//}
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<EireTrackerContext>();
+var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+try
+{
+    context.Database.Migrate();
+    //Seed.SeedData(context);
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "Problem migrating data");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

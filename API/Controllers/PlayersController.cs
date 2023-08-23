@@ -41,16 +41,6 @@ namespace API.Controllers
             return Ok(players);
         }
 
-       /* [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayersWithPerformancesAndOverallStats()
-        {
-            var players = await _context.Players.Include("Performances")
-                .Include("OverallStats")
-                .ToListAsync();
-
-            return Ok(players);
-        } */
-
         [HttpGet("overall")]
         public async Task<ActionResult<IEnumerable<PlayerWithOverallStatsDto>>> GetAllPlayersWithOverallStatsAndOverZeroMinutesPlayed()
         {
@@ -70,13 +60,31 @@ namespace API.Controllers
             return Ok(players);
         }
 
+        [HttpGet("generic/{id}")]
+        public async Task<ActionResult<Player>> GetGenericPlayerById(int id)
+        {
+            if(!await _context.Players.AnyAsync(x => x.PlayerId == id))
+            {
+                Console.WriteLine("no player with " + id + " found");
+                return NoContent();
+            }
+
+            var player = await _context.Players
+                .Include("Performances")
+                .Include("OverallStats")
+                .Where(x => x.PlayerId == id)
+              .SingleOrDefaultAsync();
+            return Ok(player);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(int id)
         {
-            //var player = await _context.Players.Include("Performances")
-            //                             .Include("OverallStats")
-            //                             .Where(x => x.PlayerId == id)
-            //                             .SingleOrDefaultAsync();
+            if (!await _context.Players.AnyAsync(x => x.PlayerId == id))
+            {
+                Console.WriteLine("no player with " + id + " found");
+                return NoContent();
+            }
 
             var player = await _context.Players.Select(x => new PlayerDetailDto
             {
@@ -89,10 +97,7 @@ namespace API.Controllers
                 Performances = x.Performances
             }).Where(x => x.PlayerId == id)
               .SingleOrDefaultAsync();
-
-            //if (player != null) 
-            //    player.SortPerformancesByDate();
-
+            Console.WriteLine(player.Name + " found");
             return Ok(player);
         }
 
@@ -106,6 +111,16 @@ namespace API.Controllers
                 return Ok(player);
 
             return BadRequest(new ProblemDetails { Title = "Problem saving player" });
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAll()
+        {
+            _context.Performances.RemoveRange(_context.Performances);
+            _context.OverallStats.RemoveRange(_context.OverallStats);
+            _context.Players.RemoveRange(_context.Players);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
