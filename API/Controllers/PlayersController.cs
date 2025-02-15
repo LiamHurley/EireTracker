@@ -22,10 +22,10 @@ namespace API.Controllers
         {
             
             _context.Players.Add(player);
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT dbo.Players ON");
+            //await _context.Database.OpenConnectionAsync();
+            //await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT Players ON");
             var isSaved = await _context.SaveChangesAsync() > 0;
-            await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT dbo.Players OFF");
+            //await _context.Database.ExecuteSqlRawAsync(@"SET IDENTITY_INSERT Players OFF");
 
             if (isSaved)
                 return Ok(player);
