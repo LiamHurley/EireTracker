@@ -101,6 +101,31 @@ namespace API.Controllers
             return Ok(player);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchPlayers([FromQuery] string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return BadRequest(new { error = "Name query parameter is required" });
+            }
+
+            var players = await _context.Players
+                .Where(p => p.Name.ToLower().Contains(name.ToLower()))
+                .Take(10)
+                .Select(x => new PlayerWithOverallStatsDto
+                {
+                    PlayerId = x.PlayerId,
+                    Name = x.Name,
+                    Club = x.Club,
+                    Position = x.Position,
+                    DateOfBirth = x.DateOfBirth,
+                    OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto()
+                })
+                .ToListAsync();
+
+            return Ok(players);
+        }
+
         [HttpPut]
         public async Task<ActionResult> UpdatePlayerById([FromBody] Player player)
         {
