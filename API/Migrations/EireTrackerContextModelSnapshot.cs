@@ -100,6 +100,16 @@ namespace API.Migrations
                         .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
+                    b.Property<decimal>("ExpectedAssists")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(65,30)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("ExpectedGoals")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(65,30)")
+                        .HasDefaultValue(0m);
+
                     b.Property<double>("Fouls")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("double")
@@ -114,6 +124,11 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("double")
                         .HasDefaultValue(0.0);
+
+                    b.Property<decimal>("GoalsPrevented")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(65,30)")
+                        .HasDefaultValue(0m);
 
                     b.Property<double>("InterceptionWon")
                         .ValueGeneratedOnAdd()
@@ -333,6 +348,12 @@ namespace API.Migrations
                         .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
+                    b.Property<decimal?>("ExpectedAssists")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal?>("ExpectedGoals")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<double?>("Fouls")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("double")
@@ -347,6 +368,9 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("double")
                         .HasDefaultValue(0.0);
+
+                    b.Property<decimal?>("GoalsPrevented")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("HomeAway")
                         .HasColumnType("varchar(1)");

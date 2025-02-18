@@ -14,6 +14,7 @@ namespace API.Models
         public double Punches { get; set; }
         public double TotalKeeperSweeper { get; set; }
         public double AccurateKeeperSweeper { get; set; }
+        public decimal GoalsPrevented { get; set; }
         #endregion
 
         #region Defensive Stats
@@ -42,6 +43,7 @@ namespace API.Models
         public double BigChanceCreated { get; set; }
         public double PossessionLostCtrl { get; set; }
         public double KeyPass { get; set; }
+        public decimal ExpectedAssists { get; set; }
         #endregion
 
         #region Shooting Stats
@@ -51,6 +53,7 @@ namespace API.Models
         public double ShotOffTarget { get; set; }
         public double OnTargetScoringAttempt { get; set; }
         public double BlockedScoringAttempt { get; set; }
+        public decimal ExpectedGoals { get; set; }
         #endregion
 
         #region Misc Stats
@@ -118,7 +121,10 @@ namespace API.Models
                 PassAccuracy = calculateStatPercentage(this.AccuratePass, this.TotalPass),
                 DuelWonPercentage = calculateStatPercentage(this.DuelWon, this.TotalDuels),
                 AerialDuelsWonPercentage = calculateStatPercentage(this.AerialWon, this.TotalAerialDuels),
-                LongBallAccuracy = calculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls)
+                LongBallAccuracy = calculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls),
+                GoalsPrevented = this.GoalsPrevented,
+                ExpectedAssists = this.ExpectedAssists,
+                ExpectedGoals = this.ExpectedGoals
             };
         }
 

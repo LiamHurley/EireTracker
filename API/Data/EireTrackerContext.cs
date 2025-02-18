@@ -348,6 +348,18 @@ namespace API.Data
             modelBuilder.Entity<OverallStats>()
                 .Property(p => p.TotalDuels)
                 .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.ExpectedGoals)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.ExpectedAssists)
+                .HasDefaultValue(0.0);
+
+            modelBuilder.Entity<OverallStats>()
+                .Property(p => p.GoalsPrevented)
+                .HasDefaultValue(0.0);
         }
 
         public DbSet<Player> Players { get; set; }

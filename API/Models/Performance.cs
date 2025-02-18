@@ -16,6 +16,7 @@ namespace API.Models
         public double? Punches { get; set; }
         public double? TotalKeeperSweeper { get; set; }
         public double? AccurateKeeperSweeper { get; set; }
+        public decimal? GoalsPrevented { get; set; }
         #endregion
 
         #region Defensive Stats
@@ -42,6 +43,7 @@ namespace API.Models
         public double? BigChanceCreated { get; set; }
         public double? PossessionLostCtrl { get; set; }
         public double? KeyPass { get; set; }
+        public decimal? ExpectedAssists { get; set; }
         #endregion
 
         #region Shooting Stats
@@ -50,6 +52,7 @@ namespace API.Models
         public double? ShotOffTarget { get; set; }
         public double? OnTargetScoringAttempt { get; set; }
         public double? BlockedScoringAttempt { get; set; }
+        public decimal? ExpectedGoals { get; set; }
         #endregion
 
         #region Misc Stats
