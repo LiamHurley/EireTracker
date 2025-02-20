@@ -15,6 +15,8 @@ builder.Services.AddDbContext<EireTrackerContext>(o =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")));
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
@@ -47,5 +49,5 @@ app.UseCors(opt =>
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("/health");
 app.Run();

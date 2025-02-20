@@ -122,9 +122,9 @@ namespace API.Models
                 DuelWonPercentage = calculateStatPercentage(this.DuelWon, this.TotalDuels),
                 AerialDuelsWonPercentage = calculateStatPercentage(this.AerialWon, this.TotalAerialDuels),
                 LongBallAccuracy = calculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls),
-                GoalsPrevented = this.GoalsPrevented,
-                ExpectedAssists = this.ExpectedAssists,
-                ExpectedGoals = this.ExpectedGoals
+                GoalsPrevented = decimal.Parse(this.GoalsPrevented.ToString("n2")),
+                ExpectedAssists = decimal.Parse(this.ExpectedAssists.ToString("n2")),
+                ExpectedGoals = decimal.Parse(this.ExpectedGoals.ToString("n2"))
             };
         }
 
