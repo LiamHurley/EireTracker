@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(EireTrackerContext))]
-    [Migration("20220911165452_Initial")]
-    partial class Initial
+    [Migration("20220913184547_DefaultValueTest")]
+    partial class DefaultValueTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,9 @@ namespace API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PerformanceId"), 1L, 1);
 
                     b.Property<int?>("AccurateCross")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int?>("AccurateKeeperSweeper")
                         .HasColumnType("int");
@@ -169,128 +171,6 @@ namespace API.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("API.Models.StatsProfile", b =>
-                {
-                    b.Property<int>("StatsProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatsProfileId"), 1L, 1);
-
-                    b.Property<int?>("AccurateCross")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccurateKeeperSweeper")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccurateLongBalls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AccuratePass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AerialLost")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AerialWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BigChanceCreated")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BigChanceMissed")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BlockedScoringAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DuelLost")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DuelWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ErrorLeadToAShot")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Fouls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Goals")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InterceptionWon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KeyPass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MinutesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OnTargetScoringAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OutfielderBlock")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PossessionLostCtrl")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Punches")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("SavedShotsFromInsideTheBox")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Saves")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ShotOffTarget")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalClearance")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalCross")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalKeeperSweeper")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalLongBalls")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalOffside")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalPass")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalTackle")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Touches")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WasFouled")
-                        .HasColumnType("int");
-
-                    b.HasKey("StatsProfileId");
-
-                    b.HasIndex("PlayerId")
-                        .IsUnique()
-                        .HasFilter("[PlayerId] IS NOT NULL");
-
-                    b.ToTable("StatsProfiles");
-                });
-
             modelBuilder.Entity("API.Models.Performance", b =>
                 {
                     b.HasOne("API.Models.Player", "Player")
@@ -300,19 +180,8 @@ namespace API.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("API.Models.StatsProfile", b =>
-                {
-                    b.HasOne("API.Models.Player", "Player")
-                        .WithOne("OverallStats")
-                        .HasForeignKey("API.Models.StatsProfile", "PlayerId");
-
-                    b.Navigation("Player");
-                });
-
             modelBuilder.Entity("API.Models.Player", b =>
                 {
-                    b.Navigation("OverallStats");
-
                     b.Navigation("Performances");
                 });
 #pragma warning restore 612, 618

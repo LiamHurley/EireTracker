@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(EireTrackerContext))]
-    [Migration("20220911165452_Initial")]
-    partial class Initial
+    [Migration("20220912102026_FixPerformances")]
+    partial class FixPerformances
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
