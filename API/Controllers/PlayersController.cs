@@ -3,6 +3,8 @@ using API.Models;
 using API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using API.Services;
 
 namespace API.Controllers
 {
@@ -11,10 +13,12 @@ namespace API.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly EireTrackerContext _context;
+        private readonly ICacheService _cache;
 
-        public PlayersController(EireTrackerContext context)
+        public PlayersController(EireTrackerContext context, ICacheService cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         [HttpPost]
@@ -44,20 +48,9 @@ namespace API.Controllers
         [HttpGet("overall")]
         public async Task<ActionResult<IEnumerable<PlayerWithOverallStatsDto>>> GetAllPlayersWithOverallStatsAndOverZeroMinutesPlayed()
         {
-            var players = await _context.Players.Select(x => new PlayerWithOverallStatsDto
-            {
-                PlayerId = x.PlayerId,
-                Name = x.Name,
-                Club = x.Club,
-                Position = x.Position,
-                DateOfBirth = x.DateOfBirth,
-                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto()
-            })
-                .ToListAsync();
+            var result = await _cache.GetOrSetAsync("overall", GetOverallStatsOverZeroMinsPlayed);
 
-            players = players.FindAll(p => p.OverallStatsDto.MinutesPlayed > 0);
-
-            return Ok(players);
+            return Ok(result);
         }
 
         [HttpGet("generic/{id}")]
@@ -65,7 +58,6 @@ namespace API.Controllers
         {
             if(!await _context.Players.AnyAsync(x => x.PlayerId == id))
             {
-                Console.WriteLine("no player with " + id + " found");
                 return NoContent();
             }
 
@@ -74,6 +66,7 @@ namespace API.Controllers
                 .Include("OverallStats")
                 .Where(x => x.PlayerId == id)
               .SingleOrDefaultAsync();
+
             return Ok(player);
         }
 
@@ -82,7 +75,6 @@ namespace API.Controllers
         {
             if (!await _context.Players.AnyAsync(x => x.PlayerId == id))
             {
-                Console.WriteLine("no player with " + id + " found");
                 return NoContent();
             }
 
@@ -97,7 +89,7 @@ namespace API.Controllers
                 Performances = x.Performances
             }).Where(x => x.PlayerId == id)
               .SingleOrDefaultAsync();
-            Console.WriteLine(player.Name + " found");
+
             return Ok(player);
         }
 
@@ -146,6 +138,22 @@ namespace API.Controllers
             _context.Players.RemoveRange(_context.Players);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        private async Task<IEnumerable<PlayerWithOverallStatsDto>> GetOverallStatsOverZeroMinsPlayed()
+        {
+            var players = await _context.Players.Select(x => new PlayerWithOverallStatsDto
+            {
+                PlayerId = x.PlayerId,
+                Name = x.Name,
+                Club = x.Club,
+                Position = x.Position,
+                DateOfBirth = x.DateOfBirth,
+                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto()
+            })
+            .ToListAsync();
+
+            return players.FindAll(p => p.OverallStatsDto.MinutesPlayed > 0);
         }
     }
 }
