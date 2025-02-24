@@ -7,7 +7,7 @@
         public string DateOfBirth { get; set; }
         public string Club { get; set; }
         public string Position { get; set; }
-        public OverallStats OverallStats { get; set; }
-        public List<Performance>? Performances { get; set; }   
+     //   public List<OverallStats> OverallStats { get; set; }
+        public List<Season>? Seasons { get; set; }   
     }
 }

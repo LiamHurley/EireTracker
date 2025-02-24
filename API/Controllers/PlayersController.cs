@@ -140,36 +140,57 @@ namespace API.Controllers
 
         private async Task<IEnumerable<PlayerWithOverallStatsDto>> GetOverallStatsOverZeroMinsPlayed()
         {
-            var players = await _context.Players.Select(x => new PlayerWithOverallStatsDto
-            {
-                PlayerId = x.PlayerId,
-                Name = x.Name,
-                Club = x.Club,
-                Position = x.Position,
-                DateOfBirth = x.DateOfBirth,
-                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto()
-            })
-            .ToListAsync();
+            var players = await _context.Players
+                .Include(p => p.Seasons)
+                .Select(x => new PlayerWithOverallStatsDto
+                {
+                    PlayerId = x.PlayerId,
+                    Name = x.Name,
+                    Club = x.Club,
+                    Position = x.Position,
+                    DateOfBirth = x.DateOfBirth,
+                    OverallStatsDto = x.Seasons.FirstOrDefault(s => s.Year == GetCurrentYear()).OverallStats.ConvertToOverallStatsDto()
+                })
+                .ToListAsync();
 
             return players.FindAll(p => p.OverallStatsDto.MinutesPlayed > 0);
         }
 
         private async Task<PlayerDetailDto> GetPlayerById(int id)
         {
-            var player = await _context.Players.Select(x => new PlayerDetailDto
-            {
-                PlayerId = x.PlayerId,
-                Name = x.Name,
-                Club = x.Club,
-                Position = x.Position,
-                DateOfBirth = x.DateOfBirth,
-                OverallStatsDto = x.OverallStats.ConvertToOverallStatsDto(),
-                Performances = x.Performances
-            })
-                .Where(x => x.PlayerId == id)
-                .SingleOrDefaultAsync();
+            var player = await _context.Players
+                .Where(p => p.PlayerId == id)
+                .Include(p => p.Seasons)
+                .ThenInclude(s => s.OverallStats)
+                .Include(p => p.Seasons)
+                .ThenInclude(s => s.Performances)
+                .Select(x => new PlayerDetailDto
+                {
+                    PlayerId = x.PlayerId,
+                    Name = x.Name,
+                    Club = x.Club,
+                    Position = x.Position,
+                    DateOfBirth = x.DateOfBirth,
+                    Seasons = x.Seasons.Select(s => s.ConvertToSeasonDto()).ToList()
+                })
+                .FirstOrDefaultAsync();
 
             return player;
+        }
+
+        private static string GetCurrentYear()
+        {
+            DateTime today = DateTime.Today;
+            int year = today.Year;
+
+            if (today.Month < 7)
+            {
+                return $"{(year - 1) % 100}/{year % 100}";
+            }
+            else
+            {
+                return $"{year % 100}/{(year + 1) % 100}";
+            }
         }
     }
 }

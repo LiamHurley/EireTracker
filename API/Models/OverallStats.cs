@@ -68,7 +68,7 @@ namespace API.Models
         public double Captain { get; set; }
         #endregion
 
-        public int? PlayerId { get; set; }
+        public int? SeasonId { get; set; }
         [JsonIgnore]
         public Player? Player { get; set; }
 
@@ -118,19 +118,78 @@ namespace API.Models
                 TotalTackle = this.TotalTackle,
                 Touches = this.Touches,
                 WasFouled = this.WasFouled,
-                PassAccuracy = calculateStatPercentage(this.AccuratePass, this.TotalPass),
-                DuelWonPercentage = calculateStatPercentage(this.DuelWon, this.TotalDuels),
-                AerialDuelsWonPercentage = calculateStatPercentage(this.AerialWon, this.TotalAerialDuels),
-                LongBallAccuracy = calculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls),
+                PassAccuracy = CalculateStatPercentage(this.AccuratePass, this.TotalPass),
+                DuelWonPercentage = CalculateStatPercentage(this.DuelWon, this.TotalDuels),
+                AerialDuelsWonPercentage = CalculateStatPercentage(this.AerialWon, this.TotalAerialDuels),
+                LongBallAccuracy = CalculateStatPercentage(this.AccurateLongBalls, this.TotalLongBalls),
                 GoalsPrevented = decimal.Parse(this.GoalsPrevented.ToString("n2")),
                 ExpectedAssists = decimal.Parse(this.ExpectedAssists.ToString("n2")),
                 ExpectedGoals = decimal.Parse(this.ExpectedGoals.ToString("n2"))
             };
         }
 
-        private double calculateStatPercentage(double statToDivide, double statToDivideBy)
+        private static double CalculateStatPercentage(double statToDivide, double statToDivideBy) => statToDivideBy == 0 ? 0 : Math.Round((statToDivide / statToDivideBy) * 100, 2, MidpointRounding.AwayFromZero);
+
+        public void Update(Performance performance)
         {
-            return statToDivideBy == 0 ? 0 : Math.Round((statToDivide / statToDivideBy) * 100, 2, MidpointRounding.AwayFromZero);
+            if (performance.MinutesPlayed > 0)
+            {
+                this.MatchesPlayed++;
+                this.Rating += UpdateDoubleStat(performance.Rating);
+                this.AverageRating = Math.Round(UpdateDoubleStat(this.Rating / this.MatchesPlayed), 2, MidpointRounding.AwayFromZero);
+                this.CleanSheets += (bool)performance.CleanSheet ? 1 : 0;
+            }
+
+            this.AccurateCross += UpdateDoubleStat(performance.AccurateCross);
+            this.AccurateKeeperSweeper += UpdateDoubleStat(performance.AccurateKeeperSweeper);
+            this.AccurateLongBalls += UpdateDoubleStat(performance.AccurateLongBalls);
+            this.AerialLost += UpdateDoubleStat(performance.AerialLost);
+            this.AccuratePass += UpdateDoubleStat(performance.AccuratePass);
+            this.AerialWon += UpdateDoubleStat(performance.AerialWon);
+            this.BigChanceCreated += UpdateDoubleStat(performance.BigChanceCreated);
+            this.BigChanceMissed += UpdateDoubleStat(performance.BigChanceMissed);
+            this.BlockedScoringAttempt += UpdateDoubleStat(performance.BlockedScoringAttempt);
+            this.DuelLost += UpdateDoubleStat(performance.DuelLost);
+            this.DuelWon += UpdateDoubleStat(performance.DuelWon);
+            this.ErrorLeadToAShot += UpdateDoubleStat(performance.ErrorLeadToAShot);
+            this.Fouls += UpdateDoubleStat(performance.Fouls);
+            this.Goals += UpdateDoubleStat(performance.Goals);
+            this.GoalAssist += UpdateDoubleStat(performance.GoalAssist);
+            this.InterceptionWon += UpdateDoubleStat(performance.InterceptionWon);
+            this.KeyPass += UpdateDoubleStat(performance.KeyPass);
+            this.MinutesPlayed += UpdateDoubleStat(performance.MinutesPlayed);
+            this.OnTargetScoringAttempt += UpdateDoubleStat(performance.OnTargetScoringAttempt);
+            this.OutfielderBlock += UpdateDoubleStat(performance.OutfielderBlock);
+            this.PossessionLostCtrl += UpdateDoubleStat(performance.PossessionLostCtrl);
+            this.Punches += UpdateDoubleStat(performance.Punches);
+            this.SavedShotsFromInsideTheBox += UpdateDoubleStat(performance.SavedShotsFromInsideTheBox);
+            this.ShotOffTarget += UpdateDoubleStat(performance.ShotOffTarget);
+            this.Saves += UpdateDoubleStat(performance.Saves);
+            this.TotalShotsTaken += UpdateDoubleStat(performance.BlockedScoringAttempt + performance.OnTargetScoringAttempt + performance.ShotOffTarget);
+            this.TotalAerialDuels += UpdateDoubleStat(performance.AerialLost + performance.AerialWon);
+            this.TotalDuels += UpdateDoubleStat(performance.DuelLost + performance.DuelWon);
+            this.TotalClearance += UpdateDoubleStat(performance.TotalClearance);
+            this.TotalCross += UpdateDoubleStat(performance.TotalCross);
+            this.TotalKeeperSweeper += UpdateDoubleStat(performance.TotalKeeperSweeper);
+            this.TotalLongBalls += UpdateDoubleStat(performance.TotalLongBalls);
+            this.TotalOffside += UpdateDoubleStat(performance.TotalOffside);
+            this.TotalPass += UpdateDoubleStat(performance.TotalPass);
+            this.TotalTackle += UpdateDoubleStat(performance.TotalTackle);
+            this.Touches += UpdateDoubleStat(performance.Touches);
+            this.WasFouled += UpdateDoubleStat(performance.WasFouled);
+            this.ExpectedAssists += UpdateDecimalStat(performance.ExpectedAssists);
+            this.ExpectedGoals += UpdateDecimalStat(performance.ExpectedGoals);
+            this.GoalsPrevented += UpdateDecimalStat(performance.GoalsPrevented);
+
+            if (performance.Captain == true)
+                this.Captain++;
+
+            if (performance.Substitute != null && performance.Substitute == true)
+                this.Substitute++;
         }
+
+        private double UpdateDoubleStat(double? performanceValue) => (double)(performanceValue != null ? performanceValue : 0);
+
+        private decimal UpdateDecimalStat(decimal? performanceValue) => (decimal)(performanceValue != null ? performanceValue : 0);
     }
 }

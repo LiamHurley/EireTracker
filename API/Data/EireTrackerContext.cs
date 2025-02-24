@@ -5,25 +5,47 @@ namespace API.Data
 {
     public class EireTrackerContext : DbContext
     {
-        public EireTrackerContext(DbContextOptions options) : base(options)
-        {
+       // private IConfiguration config;
 
+        public EireTrackerContext(DbContextOptions<EireTrackerContext> options) : base(options)
+        {
+            //config = configuration;
         }
 
-        public EireTrackerContext()
-        {
+        //public EireTrackerContext()
+        //{
 
-        }
+        //}
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseMySql(config.GetConnectionString("DefaultConnection"),
+        //        ServerVersion.AutoDetect(config.GetConnectionString("DefaultConnection")));
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>()
-                .HasMany(p => p.Performances)
-                .WithOne(o => o.Player);
+                .HasMany(p => p.Seasons)
+                .WithOne()
+                .HasForeignKey(s => s.PlayerId)
+                .IsRequired();
 
-            modelBuilder.Entity<Player>()
-                .HasOne(o => o.OverallStats)
-                .WithOne(o => o.Player);
+            modelBuilder.Entity<Season>()
+                .HasMany(s => s.Performances)
+                .WithOne()
+                .HasForeignKey(p => p.SeasonId)
+                .IsRequired();
+
+            modelBuilder.Entity<Season>()
+                .HasOne(s => s.OverallStats)
+                .WithOne()
+                .HasForeignKey<OverallStats>(o => o.SeasonId)
+                .IsRequired(false);
+
+            //modelBuilder.Entity<Player>()
+            //    .HasMany(o => o.OverallStats)
 
             modelBuilder.Entity<Performance>()
                 .Property(p => p.AccurateCross)
@@ -365,5 +387,6 @@ namespace API.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<OverallStats> OverallStats { get; set; }
         public DbSet<Performance> Performances { get; set; }
+        public DbSet<Season> Seasons { get; set; }
     }
 }

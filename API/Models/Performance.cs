@@ -74,7 +74,8 @@ namespace API.Models
 
         #endregion
 
-        public int? PlayerId { get; set; }
+       // public int? PlayerId { get; set; }
+        public int SeasonId { get; set; }
         [JsonIgnore]
         public Player? Player { get; set; }
 
